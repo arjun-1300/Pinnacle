@@ -188,9 +188,9 @@ export function VitalsForm({ onAnalyze, loading }) {
       {/* Vitals inputs (Clean Professional Medical Fields) */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
         gap: 14,
-        marginBottom: 18,
+        marginBottom: 20,
       }}>
         <Field
           id="hr-input"
@@ -238,61 +238,69 @@ export function VitalsForm({ onAnalyze, loading }) {
         />
       </div>
 
-      {/* Active Medications */}
-      <div style={{ marginBottom: 14 }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.70rem',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-          color: '#4b5563',
-          marginBottom: 6,
-        }}>
-          <Pill size={12} /> Active Medications
+      {/* Medications & Allergies Grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: 16,
+        marginBottom: 22,
+      }}>
+        {/* Active Medications */}
+        <div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.70rem',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            color: '#4b5563',
+            marginBottom: 8,
+          }}>
+            <Pill size={12} /> Active Medications
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {MEDS_OPTIONS.map(m => (
+              <Chip
+                key={m}
+                label={m}
+                type="med"
+                active={meds.includes(m)}
+                onToggle={() => toggleItem(meds, setMeds, m)}
+              />
+            ))}
+          </div>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {MEDS_OPTIONS.map(m => (
-            <Chip
-              key={m}
-              label={m}
-              type="med"
-              active={meds.includes(m)}
-              onToggle={() => toggleItem(meds, setMeds, m)}
-            />
-          ))}
-        </div>
-      </div>
 
-      {/* Documented Allergies */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.70rem',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-          color: '#4b5563',
-          marginBottom: 6,
-        }}>
-          <AlertTriangle size={12} /> Documented Allergies
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {ALLERGY_OPTIONS.map(a => (
-            <Chip
-              key={a}
-              label={a}
-              type="allergy"
-              active={allergies.includes(a)}
-              onToggle={() => toggleItem(allergies, setAllergies, a)}
-            />
-          ))}
+        {/* Documented Allergies */}
+        <div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.70rem',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            color: '#4b5563',
+            marginBottom: 8,
+          }}>
+            <AlertTriangle size={12} /> Documented Allergies
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {ALLERGY_OPTIONS.map(a => (
+              <Chip
+                key={a}
+                label={a}
+                type="allergy"
+                active={allergies.includes(a)}
+                onToggle={() => toggleItem(allergies, setAllergies, a)}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

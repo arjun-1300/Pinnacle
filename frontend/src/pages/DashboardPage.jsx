@@ -104,40 +104,38 @@ export function DashboardPage() {
           onScrollToInput={() => document.getElementById('clinical-console')?.scrollIntoView({ behavior: 'smooth' })}
         />
 
-        {/* ── 2-Column Clinical Workbench Grid ── */}
-        <div className="dashboard-grid">
-          {/* Left Column (40%): Patient Input Console */}
-          <div className="dashboard-left">
-            <VitalsForm onAnalyze={handleAnalyze} loading={analyzing} />
+        {/* ── Section 1: Patient Input Console (Separated Block) ── */}
+        <div id="patient-vitals-section" style={{ width: '100%' }}>
+          <VitalsForm onAnalyze={handleAnalyze} loading={analyzing} />
 
-            {error && (
-              <div style={{
-                padding: '10px 14px',
-                background: '#fef2f2',
-                border: '1px solid #fecaca',
-                borderRadius: 2,
-                color: '#b91c1c',
-                fontSize: '0.78rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-              }}>
-                <span>⚠</span>
-                <span>{error}</span>
-              </div>
-            )}
-          </div>
+          {error && (
+            <div style={{
+              marginTop: 12,
+              padding: '10px 14px',
+              background: '#fef2f2',
+              border: '1px solid #fecaca',
+              borderRadius: 4,
+              color: '#b91c1c',
+              fontSize: '0.78rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }}>
+              <span>⚠</span>
+              <span>{error}</span>
+            </div>
+          )}
+        </div>
 
-          {/* Right Column (60%): Assessment, Safety & Physician Governance */}
-          <div className="dashboard-right">
-            <AgentRiskCard result={result} />
-            <SafetyBanner result={result} />
-            <PhysicianApprovalBar
-              result={result}
-              onDecide={handleDecide}
-              onAuditRefresh={refreshAudit}
-            />
-          </div>
+        {/* ── Section 2: Risk Assessment, Safety & Physician Governance (Below Vitals) ── */}
+        <div id="assessment-workflow-section" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <AgentRiskCard result={result} />
+          <SafetyBanner result={result} />
+          <PhysicianApprovalBar
+            result={result}
+            onDecide={handleDecide}
+            onAuditRefresh={refreshAudit}
+          />
         </div>
 
         {/* ── 4-Agent Autonomous Pipeline Full Breakdown (Baseten Blueprint Style) ── */}

@@ -113,27 +113,27 @@ function ActionsList({ actions, risk }) {
           style={{
             display: 'flex',
             alignItems: 'flex-start',
-            gap: 8,
-            padding: '8px 12px',
+            gap: 10,
+            padding: '9px 14px',
             background: '#fafaf9',
             border: '1px solid #e5e7eb',
-            borderRadius: 2,
-            fontSize: '0.78rem',
-            lineHeight: 1.45,
+            borderRadius: 3,
+            fontSize: '0.80rem',
+            lineHeight: 1.5,
             color: '#1f2937',
           }}
         >
-          <ChevronRight size={14} style={{ flexShrink: 0, marginTop: 2, color: 'var(--baseten-green-dark)' }} />
+          <span style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.72rem',
+            fontWeight: 700,
+            color: '#008744',
+            flexShrink: 0,
+            marginTop: 1,
+          }}>
+            {i + 1}.
+          </span>
           <div>
-            <strong style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.68rem',
-              color: '#4b5563',
-              marginRight: 6,
-              textTransform: 'uppercase',
-            }}>
-              ACTION {i + 1}:
-            </strong>
             {action}
           </div>
         </div>
@@ -192,42 +192,17 @@ export function AgentRiskCard({ result }) {
       {/* Confidence Bar */}
       <ConfidenceBar value={result.confidence} />
 
-      {/* Clinical Rationale Box (Baseten Clean Style) */}
+      {/* Clinical Rationale Box */}
       {result.clinical_rationale && (
         <div style={{
           marginTop: 14,
           padding: '12px 16px',
-          borderRadius: 2,
+          borderRadius: 3,
           background: '#fafaf9',
           border: '1px solid #e5e7eb',
           borderLeft: '4px solid var(--baseten-green)',
         }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 6,
-          }}>
-            <span style={{
-              fontSize: '0.68rem',
-              fontWeight: 800,
-              fontFamily: 'var(--font-mono)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#005a2b',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 5,
-            }}>
-              {result.llm_powered ? '✨ GEMINI AI CLINICAL SYNTHESIS' : '🤖 HEURISTIC REASONING'}
-            </span>
-            {result.llm_model && (
-              <span style={{ fontSize: '0.66rem', fontFamily: 'var(--font-mono)', color: '#6b7280' }}>
-                {result.llm_model}
-              </span>
-            )}
-          </div>
-          <p style={{ fontSize: '0.80rem', lineHeight: 1.55, color: '#1f2937' }}>
+          <p style={{ fontSize: '0.82rem', lineHeight: 1.55, color: '#1f2937' }}>
             {result.clinical_rationale}
           </p>
         </div>
@@ -257,7 +232,7 @@ export function AgentRiskCard({ result }) {
             fontWeight: 700,
             color: '#111827',
           }}>
-            4 AGENTS EVALUATED (MONITORING • PHARMACOLOGY • DECISION • SAFETY)
+            4 AGENTS EVALUATED (MONITORING • MEDICATION • DECISION • SAFETY)
           </span>
         </div>
         <span style={{

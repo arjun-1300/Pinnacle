@@ -119,7 +119,6 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
                 <th style={{ padding: '10px 14px' }}>#</th>
                 <th style={{ padding: '10px 14px' }}>Timestamp</th>
                 <th style={{ padding: '10px 14px' }}>Patient ID</th>
-                <th style={{ padding: '10px 14px' }}>Clinical Telemetry & Rx</th>
                 <th style={{ padding: '10px 14px' }}>Risk Tier</th>
                 <th style={{ padding: '10px 14px' }}>Confidence</th>
                 <th style={{ padding: '10px 14px' }}>Safety Status</th>
@@ -129,7 +128,6 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
             <tbody>
               {entries.map((entry, index) => {
                 const blocked = entry.drug_blocked
-                const vitals = entry.vitals || {}
 
                 return (
                   <tr
@@ -167,40 +165,6 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
                       }}>
                         #{entry.patient_id || 'UNKNOWN'}
                       </span>
-                    </td>
-
-                    <td style={{ padding: '12px 14px' }}>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
-                        {vitals.heart_rate != null && (
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', background: '#fafaf9', border: '1px solid #e5e7eb', padding: '1px 5px', borderRadius: 2 }}>
-                            HR: {vitals.heart_rate}
-                          </span>
-                        )}
-                        {vitals.spo2 != null && (
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', background: '#fafaf9', border: '1px solid #e5e7eb', padding: '1px 5px', borderRadius: 2 }}>
-                            SpO₂: {vitals.spo2}%
-                          </span>
-                        )}
-                        {vitals.temperature != null && (
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', background: '#fafaf9', border: '1px solid #e5e7eb', padding: '1px 5px', borderRadius: 2 }}>
-                            Temp: {vitals.temperature}°C
-                          </span>
-                        )}
-                        {entry.candidate_drug && (
-                          <span style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.68rem',
-                            fontWeight: 700,
-                            padding: '1px 6px',
-                            borderRadius: 2,
-                            background: blocked ? '#fee2e2' : '#e6fcf1',
-                            color: blocked ? '#991b1b' : '#005a2b',
-                            textDecoration: blocked ? 'line-through' : 'none',
-                          }}>
-                            Rx: {entry.candidate_drug}
-                          </span>
-                        )}
-                      </div>
                     </td>
 
                     <td style={{ padding: '12px 14px' }}>
