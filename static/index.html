@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <script>
+    try { document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem('color-scheme') ?? 'light dark'; } catch(e){}
+  </script>
+  <title>Pinnacle — Healthcare Monitor (Standalone)</title>
+  <meta name="description" content="Standalone fallback dashboard for the Pinnacle Multi-Agent Healthcare Monitoring System." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      color-scheme: light dark;
+      --accent: #6366f1;
+      --accent-glow: #6366f133;
+      --bg:           light-dark(#f0f2f7, #0d0f17);
+      --bg-surface:   light-dark(#ffffff, #141824);
+      --bg-card:      light-dark(#ffffff, #1e2436);
+      --bg-elevated:  light-dark(#f4f5f9, #0d0f17);
+      --border:       light-dark(#e2e5ef, #252b3d);
+      --text-primary: light-dark(#0f1117, #f0f2f8);
+      --text-secondary:light-dark(#5b6180, #8890ab);
+      --text-muted:   light-dark(#9aa0b8, #545c75);
+      --risk-normal:   #10b981; --risk-normal-bg: #10b98120;
+      --risk-warning:  #f59e0b; --risk-warning-bg:#f59e0b20;
+      --risk-critical: #ef4444; --risk-critical-bg:#ef444420;
+      --radius-md: 12px; --radius-lg: 18px; --radius-full: 9999px;
+      --shadow-md: light-dark(0 4px 16px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.5));
+      --font: 'Inter', system-ui, sans-serif;
+    }
+    :root:has(> head > meta[name="color-scheme"][content="dark"])  { color-scheme: dark;  }
+    :root:has(> head > meta[name="color-scheme"][content="light"]) { color-scheme: light; }
+
+    html { font-size: 15px; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    /* ── Navbar ─── */
+    .navbar {
+      background: light-dark(rgba(255,255,255,0.8), rgba(20,24,36,0.8));
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; }
+    .logo  { width: 32px; height: 32px; background: linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+
+    .theme-btn {
+      background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-full);
+      padding: 5px 14px; cursor: pointer; font-family: var(--font); font-size: 0.8rem;
+      font-weight: 600; color: var(--text-secondary); transition: all 0.2s;
+    }
+    .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Layout ─── */
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: 370px 1fr; gap: 20px; }
+    @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+    .col { display: flex; flex-direction: column; gap: 18px; }
+
+    /* ── Card ─── */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; box-shadow: var(--shadow-md); }
+    .card-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+    /* ── Form ─── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .fgroup { display: flex; flex-direction: column; gap: 5px; }
+    label { font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
+    input[type=number] {
+      width: 100%; padding: 9px 12px; background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: var(--radius-md); color: var(--text-primary); font-family: var(--font); font-size: 0.9rem;
+      font-weight: 500; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type=number]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    /* ── Tags ─── */
+    .tag-section { margin-bottom: 14px; }
+    .tag-section > label { display: block; margin-bottom: 7px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      padding: 6px 14px; border-radius: var(--radius-full); border: 1.5px solid var(--border);
+      background: var(--bg-elevated); font-size: 0.8rem; font-weight: 500;
+      cursor: pointer; color: var(--text-secondary); transition: all 0.2s; user-select: none;
+    }
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
+    .tag.on { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+
+    /* ── Buttons ─── */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: var(--radius-md); font-family: var(--font); font-size: 0.85rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; width: 100%; margin-bottom: 10px; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 2px 12px #6366f133; }
+    .btn-ghost   { background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-secondary); }
+    .btn-approve { background: linear-gradient(135deg,#059669,#10b981); color:#fff; }
+    .btn-override{ background: linear-gradient(135deg,#dc2626,#f59e0b); color:#fff; }
+    .half { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .half .btn { margin-bottom: 0; }
+
+    /* ── Risk ─── */
+    .risk-box { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: var(--radius-md); border: 1.5px solid; margin-bottom: 14px; }
+    .risk-box.normal   { border-color: var(--risk-normal);   background: var(--risk-normal-bg);   color: var(--risk-normal); }
+    .risk-box.warning  { border-color: var(--risk-warning);  background: var(--risk-warning-bg);  color: var(--risk-warning); }
+    .risk-box.critical { border-color: var(--risk-critical); background: var(--risk-critical-bg); color: var(--risk-critical); }
+    .risk-box.empty    { border-color: var(--border); background: none; color: var(--text-muted); }
+    .risk-icon { font-size: 2rem; }
+    .risk-label { font-size: 1.3rem; font-weight: 800; }
+    .risk-conf  { margin-left: auto; font-size: 1.4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .risk-conf small { display: block; font-size: 0.62rem; font-weight: 500; opacity: 0.7; text-transform: uppercase; }
+
+    /* ── Vitals strip ─── */
+    .vs { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+    .vc { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 8px; text-align: center; }
+    .vc .v { font-size: 1.05rem; font-weight: 800; }
+    .vc .l { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── Actions ─── */
+    .actions { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+    .action-item { display: flex; gap: 9px; align-items: flex-start; padding: 9px 12px; background: var(--bg-elevated); border-radius: var(--radius-md); border-left: 3px solid var(--accent); font-size: 0.82rem; font-weight: 500; line-height: 1.4; }
+    .ab { color: var(--accent); font-size: 0.65rem; flex-shrink: 0; margin-top: 3px; }
+
+    /* ── Safety ─── */
+    .safety { border-radius: var(--radius-md); padding: 12px 14px; border: 1.5px solid; font-size: 0.82rem; line-height: 1.5; margin-bottom: 14px; }
+    .safety.blocked { border-color: var(--risk-critical); background: var(--risk-critical-bg); }
+    .safety.safe    { border-color: var(--risk-normal);   background: var(--risk-normal-bg); }
+    .safety-title { font-weight: 800; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .safety.blocked .safety-title { color: var(--risk-critical); }
+    .safety.safe    .safety-title { color: var(--risk-normal); }
+    .warn-item { padding: 5px 0; border-top: 1px solid rgba(128,128,128,.15); margin-top: 5px; color: var(--text-primary); }
+
+    /* ── Audit ─── */
+    .audit-hdr { display: grid; grid-template-columns: 1.4fr 80px 60px 80px 80px 90px; gap: 8px; padding: 4px 12px 8px; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+    .audit-row { display: grid; grid-template-columns: 1.4fr 80px 60px 80px 80px 90px; gap: 8px; align-items: center; padding: 10px 12px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.78rem; margin-bottom: 7px; }
+    .pid { font-weight: 700; font-family: monospace; font-size: 0.72rem; color: var(--text-secondary); }
+    .badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: var(--radius-full); font-size: 0.68rem; font-weight: 700; }
+    .bn { background: var(--risk-normal-bg);   color: var(--risk-normal); }
+    .bw { background: var(--risk-warning-bg);  color: var(--risk-warning); }
+    .bc { background: var(--risk-critical-bg); color: var(--risk-critical); }
+    .bp { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); }
+    .ba { background: var(--risk-normal-bg);   color: var(--risk-normal); }
+    .bo { background: var(--risk-warning-bg);  color: var(--risk-warning); }
+
+    .verdict-ok  { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-full); font-size: 0.82rem; font-weight: 700; border: 1.5px solid; }
+    .verdict-approved  { background: var(--risk-normal-bg);  border-color: var(--risk-normal);  color: var(--risk-normal); }
+    .verdict-overridden{ background: var(--risk-warning-bg); border-color: var(--risk-warning); color: var(--risk-warning); }
+
+    .err { padding: 10px 14px; border-radius: var(--radius-md); background: var(--risk-critical-bg); border: 1.5px solid var(--risk-critical); color: var(--risk-critical); font-size: 0.82rem; font-weight: 600; margin-bottom: 10px; }
+    .empty { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.85rem; }
+    .hidden { display: none !important; }
+    .divider { height: 1px; background: var(--border); margin: 12px 0; }
+    .sim-hint { padding: 6px 12px; border-radius: var(--radius-md); background: var(--bg-elevated); border: 1px dashed var(--border); font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-bottom: 12px; }
+
+    @keyframes slide-up { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .slide-up { animation: slide-up 0.3s ease forwards; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────── -->
+<nav class="navbar">
+  <div class="brand">
+    <div class="logo">⚕</div>
+    <span>Pinnacle</span>
+    <span style="font-size:0.7rem;font-weight:400;color:var(--text-muted)">Standalone</span>
+  </div>
+  <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+</nav>
+
+<!-- ── Main ───────────────────────────────────────────── -->
+<div class="container">
+
+  <!-- Left Column -->
+  <div class="col">
+
+    <!-- Input Card -->
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Patient Input</div>
+
+      <button class="btn btn-ghost" id="sim-btn" onclick="loadSimulate()">⚡ Load Simulated Patient</button>
+      <div id="sim-hint" class="sim-hint hidden"></div>
+      <div id="input-error" class="err hidden"></div>
+
+      <div class="form-grid">
+        <div class="fgroup"><label for="hr">Heart Rate (bpm)</label><input type="number" id="hr" placeholder="e.g. 75" min="20" max="250" /></div>
+        <div class="fgroup"><label for="spo2">SpO₂ (%)</label><input type="number" id="spo2" placeholder="e.g. 97" min="50" max="100" step="0.1" /></div>
+        <div class="fgroup"><label for="temp">Temperature (°C)</label><input type="number" id="temp" placeholder="e.g. 36.8" min="34" max="43" step="0.01" /></div>
+        <div class="fgroup"><label for="sbp">Systolic BP (mmHg)</label><input type="number" id="sbp" placeholder="e.g. 120" min="60" max="250" /></div>
+      </div>
+
+      <div class="tag-section">
+        <label>Current Medications</label>
+        <div class="tags">
+          <div class="tag" id="med-warfarin"  onclick="toggleTag(this,'warfarin','meds')">warfarin</div>
+          <div class="tag" id="med-lisinopril" onclick="toggleTag(this,'lisinopril','meds')">lisinopril</div>
+          <div class="tag" id="med-metformin" onclick="toggleTag(this,'metformin','meds')">metformin</div>
+        </div>
+      </div>
+
+      <div class="tag-section">
+        <label>Known Allergies</label>
+        <div class="tags">
+          <div class="tag" id="alg-aspirin"   onclick="toggleTag(this,'aspirin','allergies')">aspirin</div>
+          <div class="tag" id="alg-ibuprofen" onclick="toggleTag(this,'ibuprofen','allergies')">ibuprofen</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="analyze-btn" onclick="analyze()">🔬 Analyze Patient</button>
+    </div>
+
+    <!-- Audit Log Card -->
+    <div class="card" style="flex:1">
+      <div class="card-title" style="justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:8px"><span class="dot"></span>Audit Log <span id="audit-count" style="font-size:0.65rem;background:var(--accent-glow);color:var(--accent);border:1px solid var(--accent);border-radius:var(--radius-full);padding:1px 8px;font-weight:700;display:none"></span></div>
+        <button class="btn btn-ghost" style="width:auto;padding:4px 12px;font-size:0.72rem;margin-bottom:0" onclick="fetchAudit()">↻ Refresh</button>
+      </div>
+      <div id="audit-hdr" class="audit-hdr hidden">
+        <span>Patient</span><span>Risk</span><span>Conf.</span><span>Safety</span><span>Drug</span><span>Verdict</span>
+      </div>
+      <div id="audit-feed"><div class="empty">📋 No entries yet. Run an analysis.</div></div>
+    </div>
+
+  </div>
+
+  <!-- Right Column -->
+  <div class="col">
+
+    <!-- Risk Card -->
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Risk Assessment</div>
+      <div id="risk-box" class="risk-box empty">
+        <div class="risk-icon">🫀</div>
+        <div>
+          <div class="risk-label" style="font-size:1rem;color:var(--text-muted)">Awaiting Analysis</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px">Submit patient vitals to run the agent pipeline</div>
+        </div>
+      </div>
+      <div id="vitals-strip" class="vs hidden"></div>
+    </div>
+
+    <!-- Actions Card -->
+    <div class="card" id="actions-card" style="display:none">
+      <div class="card-title"><span class="dot"></span>Recommended Actions</div>
+      <ul id="actions-list" class="actions"></ul>
+    </div>
+
+    <!-- Safety Card -->
+    <div class="card" id="safety-card" style="display:none">
+      <div class="card-title"><span class="dot"></span>Safety Agent</div>
+      <div id="safety-box"></div>
+    </div>
+
+    <!-- Decision Card -->
+    <div class="card" id="decision-card" style="display:none">
+      <div class="card-title"><span class="dot"></span>Physician Decision</div>
+      <div id="verdict-display"></div>
+      <div id="decision-btns">
+        <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:14px">Review the pipeline recommendation and submit your clinical verdict.</p>
+        <div class="half">
+          <button class="btn btn-approve" id="approve-btn" onclick="decide('approved')">✔ Approve</button>
+          <button class="btn btn-override" id="override-btn" onclick="decide('overridden')">⚡ Override</button>
+        </div>
+      </div>
+      <div id="decision-error" class="err hidden"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────
+  const API = 'http://localhost:8000'
+  let selectedMeds     = []
+  let selectedAllergies= []
+  let currentVerdict   = null
+
+  // ── Theme ──────────────────────────────────────────────────────
+  function resolvedScheme() {
+    try { return localStorage.getItem('color-scheme') ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') }
+    catch { return 'light' }
+  }
+  function applyTheme() {
+    const s = resolvedScheme()
+    document.querySelector('meta[name="color-scheme"]').content = s === 'light' || s === 'dark' ? s : 'light dark'
+    document.getElementById('theme-toggle').textContent = resolvedScheme() === 'dark' ? '☀️ Light' : '🌙 Dark'
+  }
+  function toggleTheme() {
+    const cur = resolvedScheme()
+    const target = cur === 'dark' ? 'light' : 'dark'
+    const sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    try {
+      if (target === sys) localStorage.removeItem('color-scheme')
+      else localStorage.setItem('color-scheme', target)
+    } catch {}
+    applyTheme()
+  }
+  applyTheme()
+  window.addEventListener('storage', e => { if (e.key === 'color-scheme') applyTheme() })
+
+  // ── Tag toggles ────────────────────────────────────────────────
+  function toggleTag(el, val, type) {
+    const list = type === 'meds' ? selectedMeds : selectedAllergies
+    const idx = list.indexOf(val)
+    if (idx === -1) list.push(val); else list.splice(idx, 1)
+    el.classList.toggle('on', list.includes(val))
+  }
+  function resetTags() {
+    selectedMeds = []; selectedAllergies = []
+    document.querySelectorAll('.tag').forEach(t => t.classList.remove('on'))
+  }
+  function activateTags(meds, allergies) {
+    resetTags()
+    meds.forEach(m => {
+      const el = document.getElementById('med-' + m)
+      if (el) { selectedMeds.push(m); el.classList.add('on') }
+    })
+    allergies.forEach(a => {
+      const el = document.getElementById('alg-' + a)
+      if (el) { selectedAllergies.push(a); el.classList.add('on') }
+    })
+  }
+
+  // ── API helpers ────────────────────────────────────────────────
+  async function apiFetch(method, path, body) {
+    const opts = { method, headers: body ? {'Content-Type':'application/json'} : {} }
+    if (body) opts.body = JSON.stringify(body)
+    const res = await fetch(API + path, opts)
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.detail ?? `HTTP ${res.status}`)
+    return data
+  }
+
+  // ── Simulate ───────────────────────────────────────────────────
+  async function loadSimulate() {
+    const btn = document.getElementById('sim-btn')
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Loading…'
+    hideEl('input-error')
+    try {
+      const d = await apiFetch('GET', '/simulate')
+      document.getElementById('hr').value   = d.heart_rate
+      document.getElementById('spo2').value = d.spo2
+      document.getElementById('temp').value = d.temperature
+      document.getElementById('sbp').value  = d.systolic_bp
+      activateTags(d.current_meds ?? [], d.allergies ?? [])
+      showSimHint(d.true_label)
+    } catch (e) { showErr('input-error', e.message) }
+    finally { btn.disabled = false; btn.innerHTML = '⚡ Load Simulated Patient' }
+  }
+
+  function showSimHint(label) {
+    const el = document.getElementById('sim-hint')
+    el.innerHTML = `Simulated class: <strong style="color:var(--accent)">${label}</strong>`
+    el.classList.remove('hidden')
+  }
+
+  // ── Analyze ────────────────────────────────────────────────────
+  async function analyze() {
+    hideEl('input-error')
+    const hr = parseFloat(document.getElementById('hr').value)
+    const spo2 = parseFloat(document.getElementById('spo2').value)
+    const temp = parseFloat(document.getElementById('temp').value)
+    const sbp  = parseFloat(document.getElementById('sbp').value)
+    if ([hr,spo2,temp,sbp].some(isNaN)) { showErr('input-error','Please fill in all 4 vital sign fields.'); return }
+
+    const btn = document.getElementById('analyze-btn')
+    btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Analyzing…'
+    currentVerdict = null
+
+    try {
+      const r = await apiFetch('POST', '/analyze', {
+        heart_rate: hr, spo2, temperature: temp, systolic_bp: sbp,
+        current_meds: selectedMeds, allergies: selectedAllergies
+      })
+      renderResult(r)
+      fetchAudit()
+    } catch (e) { showErr('input-error', e.message) }
+    finally { btn.disabled = false; btn.innerHTML = '🔬 Analyze Patient' }
+  }
+
+  // ── Render result ──────────────────────────────────────────────
+  function renderResult(r) {
+    // Risk box
+    const rb = document.getElementById('risk-box')
+    const cls = (r.predicted_risk ?? '').toLowerCase()
+    const icons = {normal:'💚', warning:'⚠️', critical:'🚨'}
+    const pct = Math.round((r.confidence ?? 0) * 100)
+    rb.className = `risk-box ${cls} slide-up`
+    rb.innerHTML = `
+      <div class="risk-icon">${icons[cls] ?? '❓'}</div>
+      <div><div class="risk-label">${r.predicted_risk}</div><div style="font-size:0.75rem;opacity:0.75;margin-top:3px">ID: ${r.patient_id}</div></div>
+      <div class="risk-conf">${pct}%<small>Confidence</small></div>`
+
+    // Vitals strip
+    const vs = document.getElementById('vitals-strip')
+    vs.classList.remove('hidden')
+    const v = r.vitals ?? {}
+    vs.innerHTML = [
+      {val: v.heart_rate,  lbl:'HR',   unit:'bpm'},
+      {val: v.spo2,        lbl:'SpO₂', unit:'%'},
+      {val: v.temperature, lbl:'Temp', unit:'°C'},
+      {val: v.systolic_bp, lbl:'SBP',  unit:'mmHg'},
+    ].map(x => `<div class="vc"><div class="v">${typeof x.val==='number'?x.val.toFixed(1):x.val}</div><div class="l">${x.lbl}</div></div>`).join('')
+
+    // Actions
+    const acts = r.suggested_actions ?? []
+    if (acts.length) {
+      showEl('actions-card')
+      document.getElementById('actions-list').innerHTML = acts.map(a =>
+        `<li class="action-item"><span class="ab">▶</span>${a}</li>`).join('')
+    } else { hideEl('actions-card') }
+
+    // Safety
+    showEl('safety-card')
+    const blocked = r.drug_blocked
+    const scls = blocked ? 'blocked' : 'safe'
+    const warnings = (r.interaction_warnings ?? []).map(w =>
+      `<div class="warn-item">${w}</div>`).join('')
+    const drugBadge = r.candidate_drug
+      ? `<div style="margin-top:10px">
+           <span style="font-size:0.75rem;color:var(--text-secondary)">Suggested drug: </span>
+           <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--radius-full);font-size:0.78rem;font-weight:700;
+             background:${blocked?'var(--risk-critical-bg)':'var(--risk-normal-bg)'};
+             color:${blocked?'var(--risk-critical)':'var(--risk-normal)'};
+             border:1px solid ${blocked?'var(--risk-critical)':'var(--risk-normal)'};
+             text-decoration:${blocked?'line-through':'none'}">
+             ${blocked?'🚫':'✔'} ${r.candidate_drug}
+           </span></div>` : ''
+    const note = r.physician_notes?.[0]
+      ? `<div style="margin-top:10px;padding:8px;border-radius:8px;background:rgba(0,0,0,.05);font-size:0.78rem;line-height:1.5;color:var(--text-primary)">${r.physician_notes[0]}</div>` : ''
+    document.getElementById('safety-box').innerHTML =
+      `<div class="safety ${scls} slide-up">
+        <div class="safety-title">${blocked?'🛑 Safety Agent — Drug Blocked':'✅ Safety Agent — Cleared'}</div>
+        ${warnings}${drugBadge}${note}
+      </div>`
+
+    // Decision
+    showEl('decision-card')
+    document.getElementById('verdict-display').innerHTML = ''
+    showEl('decision-btns')
+    hideEl('decision-error')
+    document.getElementById('approve-btn').disabled = false
+    document.getElementById('override-btn').disabled = false
+  }
+
+  // ── Decide ─────────────────────────────────────────────────────
+  async function decide(choice) {
+    document.getElementById('approve-btn').disabled = true
+    document.getElementById('override-btn').disabled = true
+    hideEl('decision-error')
+    try {
+      const r = await apiFetch('POST', `/decide/${choice}`)
+      const vcls = choice === 'approved' ? 'verdict-approved' : 'verdict-overridden'
+      document.getElementById('verdict-display').innerHTML =
+        `<div class="verdict-ok ${vcls} slide-up">${choice==='approved'?'✔ Approved':'⚡ Overridden'}<span style="margin-left:6px;font-weight:400;font-size:0.75rem">— logged to audit</span></div>`
+      hideEl('decision-btns')
+      fetchAudit()
+    } catch (e) {
+      showErr('decision-error', e.message)
+      document.getElementById('approve-btn').disabled = false
+      document.getElementById('override-btn').disabled = false
+    }
+  }
+
+  // ── Audit ──────────────────────────────────────────────────────
+  async function fetchAudit() {
+    try {
+      const entries = await apiFetch('GET', '/audit')
+      renderAudit(entries)
+    } catch { /* server offline */ }
+  }
+
+  function renderAudit(entries) {
+    const feed = document.getElementById('audit-feed')
+    const hdr  = document.getElementById('audit-hdr')
+    const cnt  = document.getElementById('audit-count')
+    if (!entries.length) {
+      feed.innerHTML = '<div class="empty">📋 No entries yet. Run an analysis.</div>'
+      hdr.classList.add('hidden'); cnt.style.display='none'; return
+    }
+    hdr.classList.remove('hidden')
+    cnt.textContent = entries.length; cnt.style.display='inline'
+
+    const rBadge = {Normal:'bn',Warning:'bw',Critical:'bc'}
+    const vBadge = {approved:'ba',overridden:'bo'}
+    feed.innerHTML = entries.map(e => {
+      const rb = rBadge[e.predicted_risk] ?? 'bp'
+      const vb = vBadge[e.physician_verdict] ?? 'bp'
+      const pct = Math.round((e.confidence??0)*100)
+      const safe = e.drug_blocked
+        ? `<span style="color:var(--risk-critical);font-weight:700;font-size:0.75rem">🛑 Blocked</span>`
+        : `<span style="color:var(--risk-normal);font-weight:700;font-size:0.75rem">✅ Clear</span>`
+      const drug = e.candidate_drug
+        ? `<span style="font-family:monospace;font-size:0.75rem;text-decoration:${e.drug_blocked?'line-through':'none'}">${e.candidate_drug}</span>`
+        : '—'
+      const t = e.timestamp ? new Date(e.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}) : '—'
+      return `<div class="audit-row">
+        <div><div class="pid">${e.patient_id}</div><div style="font-size:0.68rem;color:var(--text-muted)">${t}</div></div>
+        <span class="badge ${rb}">${e.predicted_risk}</span>
+        <span style="font-size:0.78rem;font-weight:600;color:var(--text-secondary)">${pct}%</span>
+        ${safe}
+        ${drug}
+        <span class="badge ${vb}">${e.physician_verdict ?? 'Pending'}</span>
+      </div>`
+    }).join('')
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────
+  function showEl(id) { const el=document.getElementById(id); if(el) el.style.display='' }
+  function hideEl(id) { const el=document.getElementById(id); if(el) el.classList.add('hidden') }
+  function showErr(id, msg) { const el=document.getElementById(id); if(el){ el.textContent='⚠ '+msg; el.classList.remove('hidden') } }
+
+  // Auto-refresh audit every 10s
+  fetchAudit()
+  setInterval(fetchAudit, 10000)
+</script>
+</body>
+</html>

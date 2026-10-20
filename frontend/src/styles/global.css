@@ -1,0 +1,323 @@
+/* ================================================================
+   Pinnacle — Baseten-Inspired Design System
+   Clean, high-performance inference aesthetic:
+   - Crisp white / off-white surfaces
+   - Bold high-contrast stark black typography
+   - Vibrant neon / electric green accents (#00e575)
+   - Pixelated architectural mosaic patterns
+   - Engineering-grade dashed & dotted grid lines
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ── Color Scheme & Tokens ─────────────────────────────────── */
+:root {
+  /* Brand / Baseten Palette */
+  --baseten-green:       #00e575;
+  --baseten-green-hover: #00cc66;
+  --baseten-green-dark:  #008744;
+  --baseten-green-light: #e6fcf1;
+  --baseten-green-glow:  rgba(0, 229, 117, 0.25);
+  
+  --baseten-pink:        #ff90e8;
+  --baseten-pink-light:  #fdf2f8;
+  --baseten-sage:        #d1fae5;
+  --baseten-cream:       #fbfbfa;
+  --baseten-black:       #0a0a0a;
+  --baseten-charcoal:    #1f2937;
+  --baseten-gray-light:  #f3f4f6;
+
+  /* Accent mappings */
+  --accent:              var(--baseten-green);
+  --accent-light:        #05df72;
+  --accent-hover:        var(--baseten-green-hover);
+  --accent-glow:         var(--baseten-green-glow);
+  --accent-deep:         #004d25;
+
+  /* Clinical Risk Spectrum */
+  --risk-normal:         #00c853;
+  --risk-normal-bg:      #e8f5e9;
+  --risk-normal-border:  #a5d6a7;
+  --risk-warning:        #f59e0b;
+  --risk-warning-bg:     #fffbeb;
+  --risk-warning-border: #fcd34d;
+  --risk-critical:       #ef4444;
+  --risk-critical-bg:    #fef2f2;
+  --risk-critical-border:#fca5a5;
+  --risk-blocked:        #ec4899;
+  --risk-blocked-bg:     #fdf2f8;
+  --risk-blocked-border: #fbcfe8;
+
+  /* Surfaces: Baseten Clean White & Crisp Light-Grays */
+  --bg:                  #fafafa;
+  --bg-surface:          #ffffff;
+  --bg-elevated:         #ffffff;
+  --bg-card:             #ffffff;
+  --bg-input:            #ffffff;
+  --bg-hover:            #f4f4f5;
+
+  /* Borders: Architectural Grid (Solid & Dashed) */
+  --border:              #e5e7eb;
+  --border-dashed:       1px dashed #d1d5db;
+  --border-subtle:       #f3f4f6;
+  --border-focus:        #000000;
+  --border-strong:       #111827;
+
+  /* Typography */
+  --text-primary:        #0a0a0a;
+  --text-secondary:      #4b5563;
+  --text-muted:          #6b7280;
+  --text-inverse:        #ffffff;
+
+  /* Shadows */
+  --shadow-xs:           0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm:           0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:           0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --shadow-lg:           0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+  --shadow-baseten:      0 8px 30px rgba(0,0,0,0.06);
+
+  /* Radius (Geometric & crisp) */
+  --r-xs:                2px;
+  --r-sm:                4px;
+  --r-md:                6px;
+  --r-lg:                8px;
+  --r-xl:                12px;
+  --r-full:              9999px;
+
+  /* Spacing */
+  --sp-1:                4px;
+  --sp-2:                8px;
+  --sp-3:                12px;
+  --sp-4:                16px;
+  --sp-5:                20px;
+  --sp-6:                24px;
+  --sp-8:                32px;
+  --sp-10:               40px;
+  --sp-12:               48px;
+
+  /* Fonts */
+  --font-sans:           'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:           'JetBrains Mono', 'Space Mono', 'Consolas', monospace;
+
+  /* Transitions */
+  --t-fast:              0.12s ease;
+  --t-base:              0.2s ease;
+  --t-slow:              0.35s ease;
+}
+
+/* ── Reset & Baseline ──────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
+  background-color: var(--bg);
+}
+
+/* Ensure anchor-linked blocks leave comfortable clearance below sticky navbar */
+[id] {
+  scroll-margin-top: 84px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* ── Scrollbars ────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+  border-radius: var(--r-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* ── Typography Helpers ────────────────────────────────────── */
+h1, h2, h3, h4, h5 {
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  color: var(--baseten-black);
+}
+
+h1 { font-size: 3.25rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.15rem; }
+
+p {
+  line-height: 1.6;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--baseten-gray-light);
+  color: var(--baseten-black);
+  padding: 2px 6px;
+  border-radius: var(--r-xs);
+  border: 1px solid var(--border);
+}
+
+/* ── Baseten Architectural Elements ────────────────────────── */
+
+/* Monospace boxed label like [ PRODUCTS ] in Baseten */
+.baseten-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--baseten-black);
+  border: 1px solid #111;
+  padding: 3px 9px;
+  border-radius: 2px;
+  background: #ffffff;
+}
+
+/* Green status pill */
+.baseten-pill-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #005a2b;
+  background: var(--baseten-green-light);
+  border: 1px solid rgba(0, 229, 117, 0.4);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+/* Stark Black Baseten Button */
+.btn-baseten-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+  padding: 10px 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  text-decoration: none;
+}
+.btn-baseten-primary:hover {
+  background: #1f2937;
+  border-color: #1f2937;
+  transform: translateY(-1px);
+}
+
+/* Outlined Baseten Button */
+.btn-baseten-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #d1d5db;
+  padding: 10px 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  text-decoration: none;
+}
+.btn-baseten-outline:hover {
+  border-color: #000000;
+  background: #f9fafb;
+}
+
+/* Electric Green Button */
+.btn-baseten-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--baseten-green);
+  color: #000000;
+  border: 1px solid var(--baseten-green);
+  padding: 10px 20px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  text-decoration: none;
+  box-shadow: 0 2px 8px var(--baseten-green-glow);
+}
+.btn-baseten-green:hover {
+  background: var(--baseten-green-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px var(--baseten-green-glow);
+}
+
+/* ── Animations ────────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--baseten-green);
+  display: inline-block;
+  animation: pulse-dot 1.8s infinite ease-in-out;
+}
+
+/* ── Focus ─────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}

@@ -1,0 +1,806 @@
+/* ================================================================
+   Pinnacle — Baseten-Inspired Component CSS
+   Clean, architectural, crisp high-contrast aesthetic
+   ================================================================ */
+
+/* ── App Shell & Root Layout ───────────────────────────────── */
+.app-shell {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  padding: 0 var(--sp-6) var(--sp-12) var(--sp-6);
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+  width: 100%;
+}
+
+/* ── Baseten Header & Announcement Ribbon ──────────────────── */
+.baseten-header-root {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+}
+
+.baseten-announcement-bar {
+  background: var(--baseten-green);
+  color: #000000;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 7px 16px;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.announcement-link {
+  color: #000000;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin-left: 6px;
+}
+.announcement-link:hover {
+  opacity: 0.8;
+}
+
+.baseten-navbar {
+  height: 64px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 var(--sp-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+.baseten-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--baseten-black);
+}
+
+/* Geometric Baseten Logo Glyphs (3 staggered horizontal bars) */
+.logo-symbol {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 22px;
+}
+.logo-bar-1 { width: 14px; height: 3.5px; background: #000; border-radius: 1px; }
+.logo-bar-2 { width: 22px; height: 3.5px; background: var(--baseten-green); border-radius: 1px; }
+.logo-bar-3 { width: 10px; height: 3.5px; background: #000; border-radius: 1px; }
+
+.logo-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #000000;
+}
+
+.baseten-nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+.nav-link {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #374151;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color var(--t-fast);
+}
+.nav-link:hover {
+  color: #000000;
+}
+.nav-arrow {
+  font-size: 0.65rem;
+  color: #9ca3af;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.server-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: var(--r-xs);
+  background: var(--baseten-gray-light);
+  border: 1px solid var(--border);
+  color: #374151;
+}
+
+.status-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.status-indicator-dot.online {
+  background: var(--baseten-green);
+  box-shadow: 0 0 8px rgba(0, 229, 117, 0.8);
+}
+.status-indicator-dot.offline {
+  background: #ef4444;
+}
+
+.nav-link-subtle {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-decoration: none;
+}
+.nav-link-subtle:hover {
+  color: #000;
+}
+
+/* ── Baseten Hero Section & Mosaic Grid ─────────────────────── */
+.baseten-hero-wrapper {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  margin-top: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Decorative Mosaic Grid (Baseten Signature) */
+.baseten-mosaic-strip {
+  border-bottom: 1px dashed #d1d5db;
+  padding: 12px 24px;
+  background: #fafaf9;
+}
+
+.mosaic-grid {
+  display: grid;
+  grid-template-columns: repeat(25, 1fr);
+  gap: 5px;
+  height: 28px;
+}
+
+.mosaic-cell {
+  height: 100%;
+  border-radius: 2px;
+}
+.cell-green-vibrant {
+  background: var(--baseten-green);
+}
+.cell-green-bold {
+  background: #008744;
+}
+.cell-green-light {
+  background: #d1fae5;
+}
+.cell-pink {
+  background: var(--baseten-pink);
+}
+.cell-empty {
+  background: transparent;
+  border: 1px dashed #d1d5db;
+}
+
+/* Hero Main Grid */
+.baseten-hero-main {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  border-bottom: 1px dashed #d1d5db;
+}
+
+.baseten-hero-left {
+  padding: var(--sp-10) var(--sp-8);
+  border-right: 1px dashed #d1d5db;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.baseten-hero-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: #000000;
+  margin-bottom: var(--sp-4);
+}
+
+.baseten-hero-description {
+  font-size: 1.12rem;
+  color: #4b5563;
+  line-height: 1.55;
+  max-width: 540px;
+  margin-bottom: var(--sp-6);
+}
+
+.baseten-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-8);
+}
+
+.baseten-hero-metrics {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding-top: var(--sp-6);
+  border-top: 1px dashed #e5e7eb;
+}
+
+.hero-metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hero-metric-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #000000;
+  font-family: var(--font-mono);
+}
+.hero-metric-lbl {
+  font-size: 0.72rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.hero-metric-divider {
+  width: 1px;
+  height: 28px;
+  background: #e5e7eb;
+}
+
+/* Hero Right: Isometric Architectural Schematic */
+.baseten-hero-right {
+  padding: var(--sp-8);
+  background: #fafaf9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.isometric-container {
+  width: 100%;
+  max-width: 440px;
+  height: 380px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iso-tag-top {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #111;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 2px;
+}
+
+/* Central Isometric Disc */
+.iso-disc-central {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.iso-disc-cylinder {
+  width: 170px;
+  height: 110px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--baseten-green);
+  box-shadow: 0 16px 0 -2px #008744, 0 32px 30px rgba(0, 229, 117, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transform: perspective(400px) rotateX(25deg);
+}
+.iso-disc-top {
+  text-align: center;
+  transform: rotateX(-25deg);
+}
+.iso-disc-inner-pulse {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1px dashed var(--baseten-green);
+  opacity: 0.6;
+}
+
+/* Floating Architectural Pills */
+.iso-floating-badge {
+  position: absolute;
+  background: #ffffff;
+  border: 1px solid #111;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 2px;
+  box-shadow: 2px 2px 0px #000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.badge-bullet {
+  background: #000;
+  color: #fff;
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 0.60rem;
+}
+
+.iso-badge-1 { top: 70px; right: 20px; }
+.iso-badge-2 { bottom: 120px; right: 10px; }
+.iso-badge-3 { bottom: 50px; left: 30px; }
+.iso-badge-4 { top: 85px; left: 10px; }
+
+.iso-metric-pill {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.70rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 2px;
+}
+
+/* Trust Bar / Logos */
+.baseten-trust-bar {
+  padding: var(--sp-4) var(--sp-8);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  flex-wrap: wrap;
+}
+.trust-bar-label {
+  font-family: var(--font-mono);
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+}
+.trust-logos-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  flex-wrap: wrap;
+}
+.trust-logo-item {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #111827;
+}
+
+/* ── 2-Column Clinical Workbench Grid ──────────────────────── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 4.2fr) minmax(0, 5.8fr);
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+.dashboard-left  { display: flex; flex-direction: column; gap: var(--sp-6); min-width: 0; }
+.dashboard-right { display: flex; flex-direction: column; gap: var(--sp-6); min-width: 0; }
+.dashboard-bottom { width: 100%; }
+
+@media (max-width: 1024px) {
+  .baseten-hero-main { grid-template-columns: 1fr; }
+  .baseten-hero-left { border-right: none; border-bottom: 1px dashed #d1d5db; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Baseten Cards ─────────────────────────────────────────── */
+.card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--sp-6);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.card:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-md);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--baseten-black);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.card-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--baseten-green);
+  flex-shrink: 0;
+}
+.card-eyebrow-dot.dot-green  { background: var(--risk-normal); }
+.card-eyebrow-dot.dot-red    { background: var(--risk-critical); }
+.card-eyebrow-dot.dot-amber  { background: var(--risk-warning); }
+.card-eyebrow-dot.dot-purple { background: var(--risk-blocked); }
+
+/* ── Badges ────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.70rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+  border: 1px solid transparent;
+}
+.badge-accent {
+  background: var(--baseten-green-light);
+  color: #005a2b;
+  border-color: rgba(0, 229, 117, 0.4);
+}
+.badge-pending {
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+/* ── Risk Hero Banner ──────────────────────────────────────── */
+.risk-hero {
+  border-radius: var(--r-sm);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  border: 1px solid;
+}
+.risk-hero.hero-critical {
+  background: var(--risk-critical-bg);
+  border-color: var(--risk-critical-border);
+}
+.risk-hero.hero-warning {
+  background: var(--risk-warning-bg);
+  border-color: var(--risk-warning-border);
+}
+.risk-hero.hero-normal {
+  background: var(--risk-normal-bg);
+  border-color: var(--risk-normal-border);
+}
+
+.risk-icon-wrap {
+  font-size: 1.8rem;
+}
+.risk-info {
+  flex: 1;
+}
+.risk-level-label {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.risk-patient-id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin-top: 2px;
+}
+.risk-conf-block {
+  text-align: right;
+}
+.risk-conf-pct {
+  font-size: 1.6rem;
+  font-weight: 900;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+.risk-conf-label {
+  font-size: 0.68rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* ── Vitals Strip ──────────────────────────────────────────── */
+.vitals-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.vital-chip {
+  background: #fafaf9;
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  text-align: center;
+}
+.vital-chip .val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: #000;
+}
+.vital-chip .lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── Forms and Inputs (Professional Medical Form Styling) ──── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.field-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.field-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: -0.01em;
+}
+
+.field-reference-range {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.field-input-wrap {
+  display: flex;
+  align-items: stretch;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.field-input-wrap:hover {
+  border-color: #9ca3af;
+}
+
+.field-input-wrap:focus-within {
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+}
+
+.field-input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 10px 14px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: #111827;
+}
+
+.field-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+/* Remove awkward browser number spinners */
+.field-input::-webkit-outer-spin-button,
+.field-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.field-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.field-unit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  background: #f9fafb;
+  border-left: 1px solid #e5e7eb;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* ── Safety Banner ─────────────────────────────────────────── */
+.safety-banner {
+  border-radius: var(--r-md);
+  border: 1px solid;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.safety-banner.safe {
+  background: #ffffff;
+  border-color: rgba(0, 229, 117, 0.4);
+}
+.safety-banner.blocked {
+  background: #ffffff;
+  border-color: #fca5a5;
+  border-left: 4px solid #ef4444;
+}
+
+.safety-banner-head {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px dashed #e5e7eb;
+}
+.safety-banner.safe .safety-banner-head {
+  background: var(--baseten-green-light);
+}
+.safety-banner.blocked .safety-banner-head {
+  background: #fef2f2;
+}
+
+.safety-banner-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #000;
+}
+.safety-banner-sub {
+  font-size: 0.74rem;
+  color: #4b5563;
+}
+.safety-banner-body {
+  padding: 14px 18px;
+}
+
+/* ── Audit Table (Deployment Console Style) ────────────────── */
+.audit-table-wrap {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.audit-table-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fafaf9;
+}
+
+.audit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.80rem;
+}
+.audit-table th {
+  padding: 10px 16px;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+  border-bottom: 1px solid var(--border);
+  background: #fafaf9;
+}
+.audit-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: #111827;
+}
+.audit-table tr:hover td {
+  background: #f9fafb;
+}
+
+/* ── Physician Approval Bar ────────────────────────────────── */
+.approval-bar-card {
+  background: #ffffff;
+  border: 1px solid #111;
+  border-radius: var(--r-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
