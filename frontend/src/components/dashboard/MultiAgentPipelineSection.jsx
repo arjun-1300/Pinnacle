@@ -30,15 +30,15 @@ export function MultiAgentPipelineSection({ result }) {
       id: 1,
       key: 'monitoring_agent',
       num: '01',
-      title: 'Physiological Monitoring Agent',
-      shortName: '01 / MONITORING',
+      title: 'Monitoring Agent',
+      shortName: '01 / MONITORING AGENT',
       icon: <Activity size={18} />,
       color: '#008744',
       pillBg: '#e6fcf1',
       pillBorder: 'rgba(0, 229, 117, 0.5)',
       isLlm: result?.agent_llm_status?.monitoring_agent,
-      techLabel: result?.agent_llm_status?.monitoring_agent ? 'GEMINI 3 FLASH' : 'RANDOMFOREST ML',
-      whatItDoes: 'Continuous biometric telemetry ingestion (HR, SpO2, Temp, SBP), automated anomaly detection, and patient hemodynamic risk tier stratification.',
+      techLabel: result?.agent_llm_status?.monitoring_agent ? 'GEMINI 3 FLASH' : 'RULE-BASED',
+      whatItDoes: 'Monitors heart rate, blood oxygen (SpO2), body temperature, and blood pressure to detect health risks and vital abnormalities.',
       inputsProcessed: result?.vitals ? [
         { label: 'HR', value: `${result.vitals.heart_rate} bpm` },
         { label: 'SpO₂', value: `${result.vitals.spo2}%` },
@@ -50,9 +50,9 @@ export function MultiAgentPipelineSection({ result }) {
         { label: 'Temp', value: '36.5-40°C' },
         { label: 'SBP', value: '90-170 mmHg' },
       ],
-      clinicalReasoning: result?.monitoring_reasoning || 'Evaluates physiological signals against clinical thresholds and learned Gaussian vital distributions.',
+      clinicalReasoning: result?.monitoring_reasoning || 'Evaluates physiological signals against clinical thresholds and normal vital distributions.',
       outputSummary: result ? {
-        headline: `Triage Tier: ${result.predicted_risk}`,
+        headline: `Risk Tier: ${result.predicted_risk}`,
         detail: `Confidence: ${Math.round((result.confidence || 0) * 100)}%`,
         tag: result.predicted_risk,
         tagBg: result.predicted_risk === 'Critical' ? '#fee2e2' : result.predicted_risk === 'Warning' ? '#fef3c7' : '#dcfce7',
@@ -69,15 +69,15 @@ export function MultiAgentPipelineSection({ result }) {
       id: 2,
       key: 'medication_agent',
       num: '02',
-      title: 'Pharmacovigilance & Medication Agent',
-      shortName: '02 / PHARMACOLOGY',
+      title: 'Medication Agent',
+      shortName: '02 / MEDICATION AGENT',
       icon: <Pill size={18} />,
       color: '#b45309',
       pillBg: '#fffbeb',
       pillBorder: 'rgba(245, 158, 11, 0.4)',
       isLlm: result?.agent_llm_status?.medication_agent,
-      techLabel: result?.agent_llm_status?.medication_agent ? 'GEMINI 3 FLASH' : 'DDI RULES ENGINE',
-      whatItDoes: 'Conducts automated pharmacological cross-referencing against active medications and documented allergies to preempt drug-drug interactions (DDIs).',
+      techLabel: result?.agent_llm_status?.medication_agent ? 'GEMINI 3 FLASH' : 'DDI RULES',
+      whatItDoes: 'Checks current medications and documented allergies to prevent harmful drug-drug interactions and adverse reactions.',
       inputsProcessed: result ? [
         { label: 'Active Meds', value: result.current_medications?.length ? result.current_medications.join(', ') : 'None' },
         { label: 'Allergies', value: result.known_allergies?.length ? result.known_allergies.join(', ') : 'None' },
@@ -86,16 +86,16 @@ export function MultiAgentPipelineSection({ result }) {
         { label: 'Meds Pool', value: 'warfarin, lisinopril, metformin' },
         { label: 'Allergy Pool', value: 'aspirin, ibuprofen, penicillin' },
       ],
-      clinicalReasoning: result?.medication_reasoning || 'Surveils enzyme competitive inhibition and additive hemorrhage / nephrotoxic risks across drug pairs.',
+      clinicalReasoning: result?.medication_reasoning || 'Checks for drug-drug interactions, additive side effects, and allergy conflicts across all medications.',
       outputSummary: result ? {
-        headline: result.interaction_warnings?.length ? `${result.interaction_warnings.length} DDI Warning(s)` : 'No DDI Conflicts Found',
-        detail: result.avoid_list?.length ? `Contraindicated: ${result.avoid_list.join(', ')}` : 'Profile cleared',
-        tag: result.interaction_warnings?.length ? 'DDI FLAGGED' : 'CLEARED',
+        headline: result.interaction_warnings?.length ? `${result.interaction_warnings.length} Interaction Warning(s)` : 'No Medication Conflicts Found',
+        detail: result.avoid_list?.length ? `Restricted: ${result.avoid_list.join(', ')}` : 'Medication profile cleared',
+        tag: result.interaction_warnings?.length ? 'CONFLICT FLAGGED' : 'CLEARED',
         tagBg: result.interaction_warnings?.length ? '#fef3c7' : '#dcfce7',
         tagColor: result.interaction_warnings?.length ? '#92400e' : '#166534',
       } : {
-        headline: 'DDI Database Ready',
-        detail: 'Pre-loaded interaction graph',
+        headline: 'Medication Database Ready',
+        detail: 'Pre-loaded interaction data',
         tag: 'READY',
         tagBg: '#f3f4f6',
         tagColor: '#374151',
@@ -105,33 +105,33 @@ export function MultiAgentPipelineSection({ result }) {
       id: 3,
       key: 'decision_agent',
       num: '03',
-      title: 'Clinical Decision & Intervention Agent',
-      shortName: '03 / DECISION',
+      title: 'Decision Agent',
+      shortName: '03 / DECISION AGENT',
       icon: <Brain size={18} />,
       color: '#1d4ed8',
       pillBg: '#eff6ff',
       pillBorder: 'rgba(59, 130, 246, 0.4)',
       isLlm: result?.agent_llm_status?.decision_agent,
-      techLabel: result?.agent_llm_status?.decision_agent ? 'GEMINI 3 FLASH' : 'CLINICAL HEURISTIC',
-      whatItDoes: 'Synthesizes biometric acuity with pharmacological contraindications to generate prioritized clinical action plans and propose therapeutic candidates.',
+      techLabel: result?.agent_llm_status?.decision_agent ? 'GEMINI 3 FLASH' : 'CARE RULES',
+      whatItDoes: 'Recommends medical care steps, prioritized clinical actions, and appropriate medications based on patient condition.',
       inputsProcessed: result ? [
-        { label: 'Acuity', value: result.predicted_risk || 'Normal' },
-        { label: 'Filter', value: `${result.avoid_list?.length || 0} restricted` },
-        { label: 'Telemetry', value: `${result.vitals?.heart_rate || '--'} HR / ${result.vitals?.spo2 || '--'}% SpO2` },
+        { label: 'Risk Level', value: result.predicted_risk || 'Normal' },
+        { label: 'Restricted', value: `${result.avoid_list?.length || 0} drugs` },
+        { label: 'Vitals', value: `${result.vitals?.heart_rate || '--'} HR / ${result.vitals?.spo2 || '--'}% SpO2` },
       ] : [
-        { label: 'Synthesis', value: 'Vitals + Pharmacological avoid-list' },
-        { label: 'Output', value: 'Clinical protocol + Candidate Rx' },
+        { label: 'Inputs', value: 'Vitals + Medication avoid-list' },
+        { label: 'Outputs', value: 'Care protocol + Recommended Rx' },
       ],
-      clinicalReasoning: result?.clinical_rationale || 'Formulates evidence-based resuscitation, monitoring orders, and anti-pyretic selection adhering to avoid lists.',
+      clinicalReasoning: result?.clinical_rationale || 'Formulates evidence-based care actions, monitoring instructions, and appropriate therapeutic choices.',
       outputSummary: result ? {
-        headline: result.candidate_drug ? `Candidate Drug: ${result.candidate_drug}` : 'Supportive Protocol',
-        detail: `${result.suggested_actions?.length || 0} Interventions Synthesized`,
+        headline: result.candidate_drug ? `Recommended Drug: ${result.candidate_drug}` : 'Supportive Care Plan',
+        detail: `${result.suggested_actions?.length || 0} Care Actions Generated`,
         tag: `${result.suggested_actions?.length || 0} ACTIONS`,
         tagBg: '#e0e7ff',
         tagColor: '#3730a3',
       } : {
-        headline: 'Protocol Generator',
-        detail: 'Guideline-driven synthesis',
+        headline: 'Care Plan Generator',
+        detail: 'Guideline-driven recommendations',
         tag: 'READY',
         tagBg: '#f3f4f6',
         tagColor: '#374151',
@@ -141,34 +141,34 @@ export function MultiAgentPipelineSection({ result }) {
       id: 4,
       key: 'safety_agent',
       num: '04',
-      title: 'Safety Interceptor & Regulatory Gatekeeper',
-      shortName: '04 / SAFETY GATE',
+      title: 'Safety Checking Agent',
+      shortName: '04 / SAFETY CHECKING AGENT',
       icon: result?.drug_blocked ? <ShieldAlert size={18} /> : <ShieldCheck size={18} />,
       color: result?.drug_blocked ? '#b91c1c' : '#008744',
       pillBg: result?.drug_blocked ? '#fef2f2' : '#e6fcf1',
       pillBorder: result?.drug_blocked ? 'rgba(239, 68, 68, 0.4)' : 'rgba(0, 229, 117, 0.4)',
       isLlm: result?.agent_llm_status?.safety_agent,
-      techLabel: result?.agent_llm_status?.safety_agent ? 'GEMINI 3 FLASH' : 'DETERMINISTIC GATE',
-      whatItDoes: 'Autonomous pre-execution interceptor enforcing zero-tolerance safety bounds, checking candidate prescriptions against allergies and severe DDIs before physician review.',
+      techLabel: result?.agent_llm_status?.safety_agent ? 'GEMINI 3 FLASH' : 'SAFETY GATE',
+      whatItDoes: 'Performs strict safety checks on proposed medications against allergies and harmful drug combinations before physician review.',
       inputsProcessed: result ? [
-        { label: 'Audited Drug', value: result.candidate_drug || 'None' },
+        { label: 'Proposed Drug', value: result.candidate_drug || 'None' },
         { label: 'Allergies', value: result.known_allergies?.length ? result.known_allergies.join(', ') : 'None' },
         { label: 'Avoid List', value: result.avoid_list?.length ? result.avoid_list.join(', ') : 'None' },
       ] : [
-        { label: 'Enforcement', value: 'Zero-tolerance allergy & DDI gate' },
-        { label: 'Audit', value: 'Physician override or approval' },
+        { label: 'Safety Gate', value: 'Allergy & interaction verification' },
+        { label: 'Governance', value: 'Doctor review or override' },
       ],
-      clinicalReasoning: result?.safety_reasoning || 'Intercepts orders that conflict with documented allergies or black-box anticoagulant combinations.',
+      clinicalReasoning: result?.safety_reasoning || 'Intercepts orders that conflict with documented allergies or harmful medication combinations.',
       outputSummary: result ? {
-        headline: result.drug_blocked ? `INTERCEPTED: Blocked ${result.candidate_drug}` : (result.final_drug ? `CLEARED: ${result.final_drug} Safe` : 'Verified Safe'),
-        detail: result.drug_blocked ? (result.block_reason || 'Severe clinical contraindication') : 'Zero contraindications detected',
+        headline: result.drug_blocked ? `BLOCKED: Intercepted ${result.candidate_drug}` : (result.final_drug ? `CLEARED: ${result.final_drug} is safe` : 'Verified Safe'),
+        detail: result.drug_blocked ? (result.block_reason || 'Severe medication conflict') : 'Zero contraindications detected',
         tag: result.drug_blocked ? '🛑 BLOCKED' : '✅ CLEARED',
         tagBg: result.drug_blocked ? '#fee2e2' : '#dcfce7',
         tagColor: result.drug_blocked ? '#991b1b' : '#166534',
       } : {
-        headline: 'Safety Firewall Active',
-        detail: 'Zero-tolerance enforcement',
-        tag: 'SHIELD ON',
+        headline: 'Safety Shield Active',
+        detail: 'Pre-execution safety verification',
+        tag: 'ACTIVE',
         tagBg: '#e6fcf1',
         tagColor: '#005a2b',
       },
@@ -181,17 +181,12 @@ export function MultiAgentPipelineSection({ result }) {
 
   return (
     <div id="multi-agent-pipeline" className="card" style={{ marginTop: 20 }}>
-      {/* ── Baseten Header Bar ────────────────────────────────────── */}
+      {/* ── Header Bar ────────────────────────────────────── */}
       <div className="card-header" style={{ marginBottom: 16 }}>
         <div className="card-title-row">
-          <span className="baseten-badge">
-            <span className="pulse-dot" />
-            ARCHITECTURE / 4 AUTONOMOUS AGENTS
-          </span>
-          <span className="baseten-pill-green">
-            <Sparkles size={11} style={{ marginRight: 4 }} />
-            REAL-TIME PIPELINE
-          </span>
+          <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111827' }}>
+            4-Agent Multi-Agent Workflow
+          </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -262,7 +257,7 @@ export function MultiAgentPipelineSection({ result }) {
         lineHeight: 1.5,
         marginBottom: 16,
       }}>
-        Sequential collaborative intelligence: Each specialized agent operates with autonomous telemetry, strict domain boundaries, and Google Gemini 3 Flash synthesis.
+        Each specialized agent evaluates a distinct clinical domain: monitoring vitals, reviewing medications, planning care, and verifying safety.
       </div>
 
       {/* ── Stepper Navigation Tabs (Baseten Blueprint Style) ──────── */}

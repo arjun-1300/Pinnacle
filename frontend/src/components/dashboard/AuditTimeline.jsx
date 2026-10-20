@@ -47,13 +47,12 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
       {/* Baseten Header */}
       <div className="card-header">
         <div className="card-title-row">
-          <span className="baseten-badge">
-            <span className="pulse-dot" />
-            AUDIT_LOGS.JSONL // REGULATORY COMPLIANCE
-          </span>
+          <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#111827' }}>
+            Decision History &amp; Audit Trail
+          </div>
           {entries.length > 0 && (
             <span className="baseten-pill-green">
-              {entries.length} {entries.length === 1 ? 'RECORD' : 'RECORDS'} COMMITTED
+              {entries.length} {entries.length === 1 ? 'Record' : 'Records'} Logged
             </span>
           )}
         </div>
@@ -69,12 +68,12 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
           {loading ? (
             <>
               <Spinner size="sm" />
-              <span>SYNCING...</span>
+              <span>REFRESHING...</span>
             </>
           ) : (
             <>
               <RotateCw size={12} />
-              <span>SYNC AUDIT TRAIL</span>
+              <span>REFRESH HISTORY</span>
             </>
           )}
         </button>
@@ -89,9 +88,9 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
           borderRadius: 2,
         }}>
           <Database size={32} style={{ color: '#9ca3af', margin: '0 auto 10px' }} />
-          <p style={{ fontSize: '0.82rem', color: '#4b5563', fontFamily: 'var(--font-mono)' }}>
-            NO CLINICAL RECORDS LOGGED YET.<br />
-            Execute multi-agent triage analysis above to generate immutable compliance entries.
+          <p style={{ fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
+            No clinical records logged yet.<br />
+            Run an analysis above to generate decision and safety records.
           </p>
         </div>
       ) : (

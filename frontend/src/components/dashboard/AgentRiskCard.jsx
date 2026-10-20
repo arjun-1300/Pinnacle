@@ -34,10 +34,10 @@ function EmptyState() {
       </div>
       <div className="risk-info">
         <div className="risk-level-label" style={{ fontSize: '1.1rem', color: '#4b5563' }}>
-          STANDBY FOR INGESTION
+          AWAITING PATIENT DATA
         </div>
-        <div className="risk-patient-id" style={{ fontFamily: 'var(--font-mono)' }}>
-          Submit patient vitals to trigger 4-agent inference pipeline
+        <div className="risk-patient-id">
+          Enter vitals on the left or click Simulate Case to evaluate risk
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@ function ConfidenceBar({ value }) {
         marginBottom: 6,
       }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <TrendingUp size={12} /> MODEL CONFIDENCE
+          <TrendingUp size={12} /> CONFIDENCE LEVEL
         </span>
         <strong style={{ color: '#000' }}>{pct}%</strong>
       </div>
@@ -132,7 +132,7 @@ function ActionsList({ actions, risk }) {
               marginRight: 6,
               textTransform: 'uppercase',
             }}>
-              [ACTION {i + 1}]
+              ACTION {i + 1}:
             </strong>
             {action}
           </div>
@@ -148,11 +148,8 @@ export function AgentRiskCard({ result }) {
       <div id="assessment-section" className="card animate-slide-up">
         <div className="card-header">
           <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#111827' }}>
-            Clinical Triage &amp; Risk Stratification
+            Risk Assessment
           </div>
-          <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: '#6b7280' }}>
-            Multi-Agent Evaluator
-          </span>
         </div>
         <EmptyState />
       </div>
@@ -169,24 +166,8 @@ export function AgentRiskCard({ result }) {
         <div className="card-title-row">
           <span className={cn('card-eyebrow-dot', cfg.dotClass)} />
           <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#111827' }}>
-            Clinical Triage &amp; Risk Stratification
+            Risk Assessment
           </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {result.llm_powered ? (
-            <span className="baseten-pill-green">
-              <Sparkles size={11} style={{ marginRight: 3 }} />
-              GEMINI 3 FLASH ACTIVE
-            </span>
-          ) : (
-            <span className="badge badge-pending">
-              HEURISTIC ENGINE
-            </span>
-          )}
-          <span style={{ fontSize: '0.72rem', color: '#6b7280', fontFamily: 'var(--font-mono)' }}>
-            #{result.audit_id?.slice(0, 8)}
-          </span>
         </div>
       </div>
 
@@ -197,7 +178,7 @@ export function AgentRiskCard({ result }) {
         </div>
         <div className="risk-info">
           <div className="risk-level-label" style={{ color: cfg.color }}>{cfg.label}</div>
-          <div className="risk-patient-id">PATIENT RECORD: {result.patient_id}</div>
+          <div className="risk-patient-id">Patient ID: {result.patient_id}</div>
         </div>
         <div className="risk-conf-block">
           <div className="risk-conf-pct" style={{ color: cfg.color }}>{pct}%</div>

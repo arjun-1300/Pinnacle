@@ -49,10 +49,9 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
   return (
     <div className="card" style={{ marginTop: 14 }}>
       <div className="card-header" style={{ marginBottom: 12 }}>
-        <span className="baseten-badge">
-          <span className="pulse-dot" />
-          HUMAN_IN_THE_LOOP_GOVERNANCE
-        </span>
+        <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#111827' }}>
+          Physician Review &amp; Decision
+        </div>
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -62,7 +61,7 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
           color: '#4b5563',
         }}>
           <UserCheck size={13} />
-          ATTENDING PHYSICIAN REVIEW
+          DOCTOR SIGN-OFF
         </div>
       </div>
 
@@ -82,11 +81,10 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
             <Stethoscope size={16} style={{ color: 'var(--baseten-green-dark)' }} />
             <strong style={{
               fontSize: '0.78rem',
-              fontFamily: 'var(--font-mono)',
-              color: '#000',
+              color: '#111827',
               textTransform: 'uppercase',
             }}>
-              CLINICAL VERDICT REQUIRED
+              Doctor Confirmation Required
             </strong>
           </div>
           <span style={{
@@ -94,7 +92,7 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
             fontFamily: 'var(--font-mono)',
             color: '#6b7280',
           }}>
-            CASE #{result.patient_id || result.audit_id}
+            Patient ID: {result.patient_id || result.audit_id}
           </span>
         </div>
 

@@ -16,7 +16,7 @@ export function Navbar() {
                 <span className="logo-bar-3" />
               </span>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="logo-text">pinnacle</span>
+                <span className="logo-text">CareAgent</span>
                 <span style={{
                   fontSize: '0.62rem',
                   fontFamily: 'var(--font-mono)',
@@ -25,7 +25,7 @@ export function Navbar() {
                   textTransform: 'uppercase',
                   marginTop: -2,
                 }}>
-                  Clinical Monitoring Engine
+                  Multi-Agent Decision Support
                 </span>
               </div>
             </a>
@@ -39,10 +39,10 @@ export function Navbar() {
                 Risk Assessment
               </a>
               <a href="#multi-agent-pipeline" className="nav-link">
-                4-Agent Pipeline
+                4 Agents
               </a>
               <a href="#safety-firewall" className="nav-link">
-                Safety Gate
+                Safety Check
               </a>
               <a href="#audit-trail" className="nav-link">
                 Audit Trail

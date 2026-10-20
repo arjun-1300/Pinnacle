@@ -33,7 +33,7 @@ export function SafetyBanner({ result }) {
             justifyContent: 'space-between',
           }}>
             <div className="safety-banner-title">
-              {blocked ? 'SAFETY AGENT // DRUG INTERCEPTED' : 'SAFETY AGENT // ZERO CONTRAINDICATIONS'}
+              {blocked ? 'SAFETY CHECKING AGENT // MEDICATION BLOCKED' : 'SAFETY CHECKING AGENT // NO CONFLICTS'}
             </div>
             <span style={{
               fontFamily: 'var(--font-mono)',
@@ -44,13 +44,13 @@ export function SafetyBanner({ result }) {
               background: blocked ? '#ef4444' : 'var(--baseten-green)',
               color: blocked ? '#ffffff' : '#000000',
             }}>
-              {blocked ? 'INTERCEPTED' : 'CLEARED'}
+              {blocked ? 'BLOCKED' : 'CLEARED'}
             </span>
           </div>
           <div className="safety-banner-sub">
             {blocked
-              ? 'Contraindicated drug candidate forcefully removed before physician sign-off'
-              : 'Proposed therapeutic interventions verified against allergy and DDI databases'}
+              ? 'Harmful medication candidate blocked before doctor review'
+              : 'Proposed medication verified against patient allergies and medication interactions'}
           </div>
         </div>
       </div>
@@ -74,9 +74,9 @@ export function SafetyBanner({ result }) {
             <AlertTriangle size={16} style={{ flexShrink: 0, marginTop: 2, color: '#dc2626' }} />
             <div>
               <strong style={{ display: 'block', textTransform: 'uppercase', fontFamily: 'var(--font-mono)', fontSize: '0.70rem' }}>
-                [BLOCKED BY ZERO-TOLERANCE GATEKEEPER]
+                [BLOCKED BY SAFETY CHECKING AGENT]
               </strong>
-              Contraindicated interaction detected. Proposed medication <code style={{ textDecoration: 'line-through', color: '#dc2626', background: 'transparent', border: 'none', padding: 0 }}>{drug}</code> intercepted and removed.
+              Harmful drug conflict detected. Proposed medication <code style={{ textDecoration: 'line-through', color: '#dc2626', background: 'transparent', border: 'none', padding: 0 }}>{drug}</code> was safely blocked.
             </div>
           </div>
         )}
@@ -174,7 +174,7 @@ export function SafetyBanner({ result }) {
               color: blocked ? '#b91c1c' : '#008744',
               marginBottom: 4,
             }}>
-              {result.agent_llm_status?.safety_agent ? '✨ GEMINI SAFETY AUDIT' : '🛡️ GATEKEEPER AUDIT'}
+              {result.agent_llm_status?.safety_agent ? '✨ GEMINI SAFETY VERIFICATION' : '🛡️ SAFETY CHECK REASONING'}
             </div>
             {result.safety_reasoning}
           </div>

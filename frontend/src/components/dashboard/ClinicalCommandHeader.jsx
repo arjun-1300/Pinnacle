@@ -31,7 +31,7 @@ export function ClinicalCommandHeader({ onQuickSimulate, onScrollToInput }) {
               maxWidth: 580,
               marginBottom: 24,
             }}>
-              Real-time physiological vital sign stratification, automated pharmacovigilance surveillance, and zero-tolerance safety guardrails enforced before physician review.
+              Continuous vital sign analysis, automated medication interaction checks, and safety verification to support clinical decisions.
             </p>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -45,7 +45,7 @@ export function ClinicalCommandHeader({ onQuickSimulate, onScrollToInput }) {
                 onClick={onScrollToInput}
                 className="btn-baseten-outline"
               >
-                CUSTOM VITALS INPUT →
+                ENTER PATIENT VITALS →
               </button>
             </div>
           </div>
@@ -69,16 +69,16 @@ export function ClinicalCommandHeader({ onQuickSimulate, onScrollToInput }) {
               alignItems: 'center',
               justifyContent: 'space-between',
             }}>
-              <span>PIPELINE SPECIFICATION</span>
-              <span style={{ color: 'var(--baseten-green-dark)' }}>● 4 AGENTS ONLINE</span>
+              <span>4-AGENT WORKFLOW</span>
+              <span style={{ color: 'var(--baseten-green-dark)' }}>● 4 AGENTS ACTIVE</span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                { num: '01', name: 'Physiological Monitoring', desc: 'Heart rate, SpO2, Temp, SBP risk tiering', tag: 'LLM + ML' },
-                { num: '02', name: 'Pharmacovigilance', desc: 'Drug-drug interaction & allergy cross-match', tag: 'DDI RULES' },
-                { num: '03', name: 'Clinical Decision', desc: 'Resuscitation protocols & drug prescription', tag: 'SYNTHESIS' },
-                { num: '04', name: 'Safety Gatekeeper', desc: 'Zero-tolerance pre-execution interceptor', tag: 'GATE' },
+                { num: '01', name: 'Monitoring Agent', desc: 'Heart rate, SpO2, Temp, SBP risk tiering', tag: 'VITALS' },
+                { num: '02', name: 'Medication Agent', desc: 'Drug-drug interactions & allergy check', tag: 'MEDS' },
+                { num: '03', name: 'Decision Agent', desc: 'Care recommendations & drug selection', tag: 'ACTIONS' },
+                { num: '04', name: 'Safety Checking Agent', desc: 'Pre-execution safety & conflict check', tag: 'SAFETY' },
               ].map((step) => (
                 <div
                   key={step.num}

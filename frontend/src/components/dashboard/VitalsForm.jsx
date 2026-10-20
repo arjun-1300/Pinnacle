@@ -118,11 +118,11 @@ export function VitalsForm({ onAnalyze, loading }) {
       <div className="card-header">
         <div className="card-title-row">
           <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#111827' }}>
-            Patient Physiological Parameters
+            Patient Vitals &amp; Medical History
           </div>
         </div>
         <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: '#6b7280' }}>
-          Interactive Clinical Console
+          Clinical Input
         </span>
       </div>
 
@@ -308,12 +308,12 @@ export function VitalsForm({ onAnalyze, loading }) {
         {loading ? (
           <>
             <Spinner size="sm" />
-            <span>RUNNING 4-AGENT INFERENCE...</span>
+            <span>RUNNING 4-AGENT EVALUATION...</span>
           </>
         ) : (
           <>
             <Activity size={16} />
-            <span>RUN MULTI-AGENT INFERENCE &gt;</span>
+            <span>RUN MULTI-AGENT EVALUATION &gt;</span>
           </>
         )}
       </button>
