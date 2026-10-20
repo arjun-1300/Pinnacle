@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { api } from '../api'
 import { AppShell } from '../components/layout/AppShell'
 import { Navbar } from '../components/layout/Navbar'
+import { ProjectOverviewBanner } from '../components/dashboard/ProjectOverviewBanner'
 import { ClinicalCommandHeader } from '../components/dashboard/ClinicalCommandHeader'
 import { VitalsForm } from '../components/dashboard/VitalsForm'
 import { AgentRiskCard } from '../components/dashboard/AgentRiskCard'
@@ -98,7 +99,10 @@ export function DashboardPage() {
   return (
     <AppShell navbar={<Navbar />}>
       <div className="dashboard-container">
-        {/* ── Baseten-Themed Clinical Command Header ── */}
+        {/* ── Project Overview & User Guide (What is this, Uses, How to use) ── */}
+        <ProjectOverviewBanner />
+
+        {/* ── Clinical Command Hero Header ── */}
         <ClinicalCommandHeader
           onQuickSimulate={handleQuickSimulate}
           onScrollToInput={() => document.getElementById('clinical-console')?.scrollIntoView({ behavior: 'smooth' })}

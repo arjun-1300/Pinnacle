@@ -32,6 +32,9 @@ export function Navbar() {
 
             {/* In-page Anchor Links */}
             <div className="baseten-nav-links">
+              <a href="#project-overview-guide" className="nav-link">
+                About / Guide
+              </a>
               <a href="#clinical-console" className="nav-link">
                 Patient Input
               </a>
