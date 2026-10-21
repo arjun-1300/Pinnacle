@@ -10,8 +10,8 @@ export function ProjectOverviewBanner() {
       id="project-overview-guide"
       className="card"
       style={{
-        marginTop: 20,
-        marginBottom: 8,
+        marginTop: 24,
+        marginBottom: 24,
         border: '1px solid #e5e7eb',
         background: '#ffffff',
         borderRadius: 4,

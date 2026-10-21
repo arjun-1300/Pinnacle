@@ -99,9 +99,6 @@ export function DashboardPage() {
   return (
     <AppShell navbar={<Navbar />}>
       <div className="dashboard-container">
-        {/* ── Project Overview & User Guide (What is this, Uses, How to use) ── */}
-        <ProjectOverviewBanner />
-
         {/* ── Clinical Command Hero Header ── */}
         <ClinicalCommandHeader
           onQuickSimulate={handleQuickSimulate}
@@ -153,6 +150,9 @@ export function DashboardPage() {
             onRefresh={refreshAudit}
           />
         </div>
+
+        {/* ── Project Overview & User Guide (Moved to bottom of page) ── */}
+        <ProjectOverviewBanner />
       </div>
 
       <ToastContainer />
