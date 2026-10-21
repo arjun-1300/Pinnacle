@@ -7,16 +7,21 @@ export function MultiAgentPipelineSection({ result }) {
       id: 1,
       num: '01',
       title: 'Monitoring Agent',
-      icon: <Activity size={18} />,
-      color: '#008744',
+      icon: <Activity size={18} strokeWidth={2.2} />,
+      color: '#059669',
+      iconBg: '#f0fdf4',
+      iconBorder: '#bbf7d0',
       role: 'Monitors vital signs to detect patient health risks.',
       status: result ? result.predicted_risk : 'STANDBY',
       statusBg: result
-        ? (result.predicted_risk === 'Critical' ? '#fee2e2' : result.predicted_risk === 'Warning' ? '#fef3c7' : '#dcfce7')
-        : '#f3f4f6',
+        ? (result.predicted_risk === 'Critical' ? '#fef2f2' : result.predicted_risk === 'Warning' ? '#fffbeb' : '#f0fdf4')
+        : '#f8fafc',
       statusColor: result
-        ? (result.predicted_risk === 'Critical' ? '#991b1b' : result.predicted_risk === 'Warning' ? '#92400e' : '#166534')
-        : '#4b5563',
+        ? (result.predicted_risk === 'Critical' ? '#dc2626' : result.predicted_risk === 'Warning' ? '#d97706' : '#059669')
+        : '#64748b',
+      statusBorder: result
+        ? (result.predicted_risk === 'Critical' ? '#fecaca' : result.predicted_risk === 'Warning' ? '#fde68a' : '#bbf7d0')
+        : '#e2e8f0',
       finding: result
         ? (result.monitoring_reasoning || `Vital signs evaluated. Classified as ${result.predicted_risk} risk.`)
         : 'Standby for patient vitals input.',
@@ -28,18 +33,23 @@ export function MultiAgentPipelineSection({ result }) {
       id: 2,
       num: '02',
       title: 'Medication Agent',
-      icon: <Pill size={18} />,
-      color: '#b45309',
+      icon: <Pill size={18} strokeWidth={2.2} />,
+      color: '#d97706',
+      iconBg: '#fffbeb',
+      iconBorder: '#fde68a',
       role: 'Checks active medications against allergies and drug conflicts.',
       status: result
-        ? (result.interaction_warnings?.length ? `${result.interaction_warnings.length} CONFLICTS` : 'CLEARED')
-        : 'READY',
+        ? (result.interaction_warnings?.length ? `${result.interaction_warnings.length} Conflicts` : 'Cleared')
+        : 'Ready',
       statusBg: result
-        ? (result.interaction_warnings?.length ? '#fef3c7' : '#dcfce7')
-        : '#f3f4f6',
+        ? (result.interaction_warnings?.length ? '#fffbeb' : '#f0fdf4')
+        : '#f8fafc',
       statusColor: result
-        ? (result.interaction_warnings?.length ? '#92400e' : '#166534')
-        : '#4b5563',
+        ? (result.interaction_warnings?.length ? '#d97706' : '#059669')
+        : '#64748b',
+      statusBorder: result
+        ? (result.interaction_warnings?.length ? '#fde68a' : '#bbf7d0')
+        : '#e2e8f0',
       finding: result
         ? (result.medication_reasoning || (result.interaction_warnings?.length ? 'Medication interaction identified.' : 'No interaction conflicts detected.'))
         : 'Standby for medication screening.',
@@ -51,14 +61,17 @@ export function MultiAgentPipelineSection({ result }) {
       id: 3,
       num: '03',
       title: 'Decision Agent',
-      icon: <Brain size={18} />,
-      color: '#1d4ed8',
+      icon: <Brain size={18} strokeWidth={2.2} />,
+      color: '#2563eb',
+      iconBg: '#eff6ff',
+      iconBorder: '#bfdbfe',
       role: 'Recommends medical actions and appropriate care plans.',
       status: result
-        ? `${result.suggested_actions?.length || 0} ACTIONS`
-        : 'READY',
-      statusBg: result ? '#eff6ff' : '#f3f4f6',
-      statusColor: result ? '#1e40af' : '#4b5563',
+        ? `${result.suggested_actions?.length || 0} Actions`
+        : 'Ready',
+      statusBg: result ? '#eff6ff' : '#f8fafc',
+      statusColor: result ? '#2563eb' : '#64748b',
+      statusBorder: result ? '#bfdbfe' : '#e2e8f0',
       finding: result
         ? (result.clinical_rationale || `${result.suggested_actions?.length || 0} prioritized clinical care steps formulated.`)
         : 'Standby for care plan generation.',
@@ -70,18 +83,23 @@ export function MultiAgentPipelineSection({ result }) {
       id: 4,
       num: '04',
       title: 'Safety Checking Agent',
-      icon: result?.drug_blocked ? <ShieldAlert size={18} /> : <ShieldCheck size={18} />,
-      color: result?.drug_blocked ? '#b91c1c' : '#008744',
+      icon: result?.drug_blocked ? <ShieldAlert size={18} strokeWidth={2.2} /> : <ShieldCheck size={18} strokeWidth={2.2} />,
+      color: result?.drug_blocked ? '#dc2626' : '#059669',
+      iconBg: result?.drug_blocked ? '#fef2f2' : '#f0fdf4',
+      iconBorder: result?.drug_blocked ? '#fecaca' : '#bbf7d0',
       role: 'Performs strict safety verification before doctor review.',
       status: result
-        ? (result.drug_blocked ? 'BLOCKED' : 'CLEARED')
-        : 'ACTIVE',
+        ? (result.drug_blocked ? 'Blocked' : 'Cleared')
+        : 'Active',
       statusBg: result
-        ? (result.drug_blocked ? '#fee2e2' : '#dcfce7')
-        : '#e6fcf1',
+        ? (result.drug_blocked ? '#fef2f2' : '#f0fdf4')
+        : '#f8fafc',
       statusColor: result
-        ? (result.drug_blocked ? '#991b1b' : '#166534')
-        : '#005a2b',
+        ? (result.drug_blocked ? '#dc2626' : '#059669')
+        : '#64748b',
+      statusBorder: result
+        ? (result.drug_blocked ? '#fecaca' : '#bbf7d0')
+        : '#e2e8f0',
       finding: result
         ? (result.safety_reasoning || (result.drug_blocked ? result.block_reason : 'Zero contraindications detected.'))
         : 'Pre-execution safety gate active.',
@@ -94,28 +112,28 @@ export function MultiAgentPipelineSection({ result }) {
   return (
     <div id="multi-agent-pipeline" className="card" style={{ marginTop: 20 }}>
       {/* ── Section Header ── */}
-      <div className="card-header" style={{ marginBottom: 16 }}>
+      <div className="card-header" style={{ marginBottom: 14 }}>
         <div className="card-title-row">
-          <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111827' }}>
+          <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>
             4-Agent Multi-Agent Workflow
           </div>
         </div>
-        <span style={{ fontSize: '0.72rem', color: '#6b7280', fontFamily: 'var(--font-mono)' }}>
+        <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 500 }}>
           Collaborative Clinical Pipeline
         </span>
       </div>
 
       {/* ── Subtitle Description ── */}
       <div style={{
-        fontSize: '0.84rem',
-        color: '#4b5563',
-        lineHeight: 1.5,
+        fontSize: '0.86rem',
+        color: '#475569',
+        lineHeight: 1.55,
         marginBottom: 18,
       }}>
         Each specialized agent evaluates a distinct clinical domain: monitoring vitals, reviewing medications, planning care, and verifying safety.
       </div>
 
-      {/* ── Simple 4-Card Grid (1, 2, 3, 4) ── */}
+      {/* ── Simple 4-Card Grid ── */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
@@ -126,80 +144,90 @@ export function MultiAgentPipelineSection({ result }) {
             key={agent.id}
             style={{
               background: '#ffffff',
-              border: '1px solid #e5e7eb',
-              borderRadius: 4,
-              padding: '16px 18px',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              padding: '18px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              gap: 12,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-              transition: 'border-color 0.15s ease',
+              gap: 14,
+              boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)',
+              transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
             }}
           >
             {/* Header: Number, Name, Status Badge */}
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <span style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.68rem',
-                  fontWeight: 800,
-                  background: '#111827',
-                  color: '#ffffff',
-                  padding: '2px 6px',
-                  borderRadius: 2,
+                  fontWeight: 700,
+                  background: '#f1f5f9',
+                  color: '#475569',
+                  padding: '2px 7px',
+                  borderRadius: 4,
+                  border: '1px solid #e2e8f0',
                 }}>
                   {agent.num}
                 </span>
 
                 <span style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.68rem',
-                  fontWeight: 700,
-                  padding: '2px 8px',
-                  borderRadius: 2,
+                  fontSize: '0.70rem',
+                  fontWeight: 600,
+                  padding: '3px 8px',
+                  borderRadius: 4,
                   background: agent.statusBg,
                   color: agent.statusColor,
-                  border: '1px solid rgba(0,0,0,0.08)',
+                  border: `1px solid ${agent.statusBorder}`,
                 }}>
                   {agent.status}
                 </span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                <span style={{ color: agent.color }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                <div style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 6,
+                  background: agent.iconBg,
+                  border: `1px solid ${agent.iconBorder}`,
+                  color: agent.color,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
                   {agent.icon}
-                </span>
-                <strong style={{ fontSize: '0.92rem', color: '#111827' }}>
+                </div>
+                <strong style={{ fontSize: '0.90rem', color: '#0f172a' }}>
                   {agent.title}
                 </strong>
               </div>
 
-              <p style={{ fontSize: '0.78rem', color: '#6b7280', lineHeight: 1.45, marginBottom: 10 }}>
+              <p style={{ fontSize: '0.78rem', color: '#64748b', lineHeight: 1.5, marginBottom: 8 }}>
                 {agent.role}
               </p>
             </div>
 
             {/* Live Finding / Status Block */}
             <div style={{
-              background: '#fafaf9',
-              border: '1px solid #e5e7eb',
-              borderLeft: `3px solid ${agent.color}`,
-              borderRadius: 3,
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: 6,
               padding: '10px 12px',
               fontSize: '0.78rem',
-              lineHeight: 1.45,
-              color: '#1f2937',
+              lineHeight: 1.5,
+              color: '#334155',
             }}>
               {agent.metric && (
                 <div style={{
                   fontFamily: 'var(--font-mono)',
                   fontSize: '0.68rem',
                   fontWeight: 600,
-                  color: '#4b5563',
-                  marginBottom: 4,
-                  paddingBottom: 4,
-                  borderBottom: '1px dashed #e5e7eb',
+                  color: '#475569',
+                  marginBottom: 6,
+                  paddingBottom: 6,
+                  borderBottom: '1px solid #e2e8f0',
                 }}>
                   {agent.metric}
                 </div>
@@ -214,3 +242,5 @@ export function MultiAgentPipelineSection({ result }) {
     </div>
   )
 }
+
+export default MultiAgentPipelineSection

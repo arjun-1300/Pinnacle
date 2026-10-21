@@ -1,6 +1,6 @@
 // components/dashboard/VitalsForm.jsx — Baseten-style Patient Vitals Input Console
 import { useState, useCallback } from 'react'
-import { Zap, Heart, Thermometer, Activity, Pill, AlertTriangle, ArrowRight, Sliders, Check } from 'lucide-react'
+import { Zap, Heart, Thermometer, Activity, Pill, AlertTriangle, ArrowRight, Sliders, Check, UserCheck } from 'lucide-react'
 import { Field } from '../ui/Field'
 import { Spinner } from '../ui/Spinner'
 import { api } from '../../api'
@@ -32,28 +32,32 @@ function Chip({ label, active, type = 'med', onToggle }) {
         display: 'inline-flex',
         alignItems: 'center',
         gap: 6,
-        padding: '5px 10px',
-        borderRadius: 2,
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.74rem',
-        fontWeight: 700,
-        textTransform: 'uppercase',
-        letterSpacing: '0.04em',
+        padding: '6px 12px',
+        borderRadius: 6,
+        fontSize: '0.78rem',
+        fontWeight: 600,
+        textTransform: 'capitalize',
         cursor: 'pointer',
         transition: 'all 0.15s ease',
-        background: active ? '#e6fcf1' : '#ffffff',
-        color: active ? '#005a2b' : '#374151',
-        border: active ? '1px solid #00e575' : '1px solid #d1d5db',
-        boxShadow: active ? '0 1px 3px rgba(0, 229, 117, 0.2)' : 'none',
+        background: active ? '#f0fdfa' : '#ffffff',
+        color: active ? '#0f766e' : '#475569',
+        border: active ? '1px solid #0d9488' : '1px solid #e2e8f0',
+        boxShadow: active ? '0 1px 2px rgba(13, 148, 136, 0.12)' : 'none',
       }}
     >
-      {active && <Check size={12} style={{ color: '#008744', strokeWidth: 3 }} />}
+      {active && <Check size={13} style={{ color: '#0f766e', strokeWidth: 2.5 }} />}
       {label}
     </button>
   )
 }
 
-export function VitalsForm({ onAnalyze, loading }) {
+export function VitalsForm({
+  onAnalyze,
+  loading,
+  pendingReview = false,
+  pendingPatientId = null,
+  onScrollToReview,
+}) {
   const [vitals, setVitals] = useState({
     heart_rate: '115', spo2: '92', temperature: '38.2', systolic_bp: '142',
   })
@@ -137,31 +141,33 @@ export function VitalsForm({ onAnalyze, loading }) {
           id="simulate-btn"
           type="button"
           onClick={loadSimulated}
-          disabled={simLoading}
+          disabled={simLoading || pendingReview}
           className="btn-baseten-outline"
-          style={{ padding: '8px 10px', fontSize: '0.72rem', justifyContent: 'center' }}
+          style={{ padding: '8px 10px', fontSize: '0.76rem', justifyContent: 'center' }}
         >
-          {simLoading ? <><Spinner size="sm" /> LOADING...</> : <><Zap size={12} /> RANDOM CASE</>}
+          {simLoading ? <><Spinner size="sm" /> Loading...</> : <><Zap size={13} /> Random Case</>}
         </button>
 
         <button
           id="preset-normal-btn"
           type="button"
           onClick={() => applyPreset('normal')}
+          disabled={pendingReview}
           className="btn-baseten-outline"
-          style={{ padding: '8px 10px', fontSize: '0.72rem', justifyContent: 'center' }}
+          style={{ padding: '8px 10px', fontSize: '0.76rem', justifyContent: 'center' }}
         >
-          <Heart size={12} style={{ marginRight: 3, color: '#008744' }} /> NORMAL BASELINE
+          <Heart size={13} style={{ marginRight: 4, color: '#059669' }} /> Normal Baseline
         </button>
 
         <button
           id="preset-critical-btn"
           type="button"
           onClick={() => applyPreset('critical')}
+          disabled={pendingReview}
           className="btn-baseten-outline"
-          style={{ padding: '8px 10px', fontSize: '0.72rem', justifyContent: 'center' }}
+          style={{ padding: '8px 10px', fontSize: '0.76rem', justifyContent: 'center' }}
         >
-          <AlertTriangle size={12} style={{ marginRight: 3, color: '#ef4444' }} /> CRITICAL CASE
+          <AlertTriangle size={13} style={{ marginRight: 4, color: '#dc2626' }} /> Critical Case
         </button>
       </div>
 
@@ -170,18 +176,17 @@ export function VitalsForm({ onAnalyze, loading }) {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 6,
-          background: '#fafaf9',
-          border: '1px dashed #d1d5db',
+          gap: 8,
+          background: '#f8fafc',
+          border: '1px solid #e2e8f0',
           padding: '8px 12px',
-          borderRadius: 4,
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.72rem',
-          color: '#111827',
+          borderRadius: 6,
+          fontSize: '0.76rem',
+          color: '#334155',
           marginBottom: 16,
         }}>
-          <Zap size={13} style={{ color: 'var(--baseten-green-dark)' }} />
-          Simulated Ground Truth: <strong style={{ textTransform: 'uppercase' }}>{simLabel}</strong>
+          <Zap size={14} style={{ color: '#0f766e' }} />
+          <span>Simulated Ground Truth: <strong style={{ color: '#0f172a' }}>{simLabel}</strong></span>
         </div>
       )}
 
@@ -304,27 +309,81 @@ export function VitalsForm({ onAnalyze, loading }) {
         </div>
       </div>
 
-      {/* Submit Inference Button (Baseten Stark Black / Green CTA) */}
+      {/* Submit Inference Button */}
       <button
         id="analyze-btn"
         type="button"
         className="btn-baseten-primary"
-        style={{ width: '100%', padding: '12px 18px', fontSize: '0.84rem' }}
-        disabled={!isValid || loading}
+        style={{
+          width: '100%',
+          padding: '11px 18px',
+          fontSize: '0.88rem',
+          opacity: pendingReview ? 0.6 : 1,
+          cursor: pendingReview ? 'not-allowed' : 'pointer',
+        }}
+        disabled={!isValid || loading || pendingReview}
         onClick={handleAnalyze}
       >
         {loading ? (
           <>
             <Spinner size="sm" />
-            <span>RUNNING 4-AGENT EVALUATION...</span>
+            <span>Evaluating Clinical Multi-Agent Pipeline...</span>
+          </>
+        ) : pendingReview ? (
+          <>
+            <UserCheck size={16} />
+            <span>Doctor Sign-off Required Before Next Case</span>
           </>
         ) : (
           <>
             <Activity size={16} />
-            <span>RUN MULTI-AGENT EVALUATION &gt;</span>
+            <span>Run Multi-Agent Evaluation →</span>
           </>
         )}
       </button>
+
+      {/* Notice Banner when Doctor Sign-off is Pending */}
+      {pendingReview && (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '10px 14px',
+          background: '#fffbeb',
+          border: '1px solid #fde68a',
+          borderRadius: 6,
+          fontSize: '0.78rem',
+          color: '#92400e',
+          marginTop: 10,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <AlertTriangle size={15} style={{ color: '#d97706', flexShrink: 0 }} />
+            <span>
+              <strong>Doctor Sign-off Required:</strong> Please complete <em>Approve Recommendation</em> or <em>Clinical Override</em> for Patient {pendingPatientId || ''} before evaluating another case.
+            </span>
+          </div>
+          {onScrollToReview && (
+            <button
+              type="button"
+              onClick={onScrollToReview}
+              style={{
+                background: '#ffffff',
+                border: '1px solid #fde68a',
+                borderRadius: 4,
+                padding: '4px 10px',
+                fontSize: '0.74rem',
+                fontWeight: 600,
+                color: '#b45309',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                marginLeft: 10,
+              }}
+            >
+              Sign-off Now ↓
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

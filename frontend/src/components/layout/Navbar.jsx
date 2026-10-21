@@ -1,32 +1,21 @@
-// components/layout/Navbar.jsx — Clean Clinical Navigation
-import { Activity } from 'lucide-react'
+// components/layout/Navbar.jsx — Clean, Unified Clinical Navigation
+import { HeartPulse } from 'lucide-react'
 
 export function Navbar() {
   return (
     <header className="baseten-header-root">
-      {/* ── Main Clean Navbar ── */}
+      {/* ── Main Clean Clinical Navbar ── */}
       <nav className="baseten-navbar" role="navigation">
         <div className="navbar-container">
-          {/* Brand Logo: Clean Lowercase Typography with Tech Glyph */}
+          {/* Brand Logo: Clean Medical Brand */}
           <div className="navbar-left">
             <a href="/" className="baseten-logo-link">
-              <span className="logo-symbol">
-                <span className="logo-bar-1" />
-                <span className="logo-bar-2" />
-                <span className="logo-bar-3" />
-              </span>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div className="navbar-brand-icon">
+                <HeartPulse size={18} strokeWidth={2.4} />
+              </div>
+              <div className="navbar-brand-text">
                 <span className="logo-text">CareAgent</span>
-                <span style={{
-                  fontSize: '0.62rem',
-                  fontFamily: 'var(--font-mono)',
-                  letterSpacing: '0.06em',
-                  color: '#6b7280',
-                  textTransform: 'uppercase',
-                  marginTop: -2,
-                }}>
-                  Multi-Agent Decision Support
-                </span>
+                <span className="logo-subtext">Clinical Decision Support</span>
               </div>
             </a>
 
@@ -35,21 +24,29 @@ export function Navbar() {
               <a href="#clinical-console" className="nav-link">
                 Patient Input
               </a>
-              <a href="#assessment-section" className="nav-link">
+              <a href="#assessment-workflow-section" className="nav-link">
                 Risk Assessment
               </a>
               <a href="#multi-agent-pipeline" className="nav-link">
-                4 Agents
+                4-Agent Pipeline
               </a>
               <a href="#safety-firewall" className="nav-link">
-                Safety Check
+                Safety Verification
               </a>
               <a href="#audit-trail" className="nav-link">
                 Audit Trail
               </a>
               <a href="#project-overview-guide" className="nav-link">
-                About / Guide
+                About &amp; Guide
               </a>
+            </div>
+          </div>
+
+          {/* Right Status Badge */}
+          <div className="navbar-right">
+            <div className="navbar-status-pill">
+              <span className="pulse-dot" />
+              <span>System Operational</span>
             </div>
           </div>
         </div>
@@ -57,3 +54,5 @@ export function Navbar() {
     </header>
   )
 }
+
+export default Navbar

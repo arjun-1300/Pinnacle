@@ -32,6 +32,11 @@ function formatDate(iso) {
 export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
   const timerRef = useRef(null)
 
+  // Only display finalized physician decisions (Approved or Overridden, never Pending)
+  const finalizedEntries = entries.filter(
+    e => e.physician_verdict === 'approved' || e.physician_verdict === 'overridden'
+  )
+
   useEffect(() => {
     if (onRefresh) {
       onRefresh()
@@ -44,15 +49,23 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
 
   return (
     <div id="audit-trail" className="card" style={{ marginTop: 20 }}>
-      {/* Baseten Header */}
+      {/* Clinical Header */}
       <div className="card-header">
         <div className="card-title-row">
-          <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#111827' }}>
+          <div style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a' }}>
             Decision History &amp; Audit Trail
           </div>
-          {entries.length > 0 && (
-            <span className="baseten-pill-green">
-              {entries.length} {entries.length === 1 ? 'Record' : 'Records'} Logged
+          {finalizedEntries.length > 0 && (
+            <span style={{
+              fontSize: '0.70rem',
+              fontWeight: 600,
+              padding: '2px 8px',
+              borderRadius: 20,
+              background: '#f0fdf4',
+              color: '#15803d',
+              border: '1px solid #bbf7d0',
+            }}>
+              {finalizedEntries.length} {finalizedEntries.length === 1 ? 'Decision' : 'Decisions'} Recorded
             </span>
           )}
         </div>
@@ -63,58 +76,58 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
           onClick={onRefresh}
           disabled={loading}
           className="btn-baseten-outline"
-          style={{ padding: '6px 12px', fontSize: '0.70rem', height: 32 }}
+          style={{ padding: '6px 12px', fontSize: '0.74rem', height: 32 }}
         >
           {loading ? (
             <>
               <Spinner size="sm" />
-              <span>REFRESHING...</span>
+              <span>Refreshing...</span>
             </>
           ) : (
             <>
               <RotateCw size={12} />
-              <span>REFRESH HISTORY</span>
+              <span>Refresh History</span>
             </>
           )}
         </button>
       </div>
 
-      {entries.length === 0 ? (
+      {finalizedEntries.length === 0 ? (
         <div style={{
-          padding: '40px 20px',
+          padding: '36px 20px',
           textAlign: 'center',
-          background: '#fafaf9',
-          border: '1px dashed #d1d5db',
-          borderRadius: 2,
+          background: '#f8fafc',
+          border: '1px solid #e2e8f0',
+          borderRadius: 6,
         }}>
-          <Database size={32} style={{ color: '#9ca3af', margin: '0 auto 10px' }} />
-          <p style={{ fontSize: '0.82rem', color: '#4b5563', lineHeight: 1.5 }}>
-            No clinical records logged yet.<br />
-            Run an analysis above to generate decision and safety records.
+          <Database size={28} style={{ color: '#94a3b8', margin: '0 auto 8px' }} />
+          <p style={{ fontSize: '0.82rem', color: '#64748b', lineHeight: 1.5 }}>
+            No finalized physician decisions logged yet.<br />
+            Evaluate a patient and submit approval or a clinical override to record an audit entry.
           </p>
         </div>
       ) : (
         <div style={{
           overflowX: 'auto',
-          border: '1px solid #e5e7eb',
-          borderRadius: 2,
+          border: '1px solid #e2e8f0',
+          borderRadius: 6,
           background: '#ffffff',
         }}>
           <table style={{
             width: '100%',
             borderCollapse: 'collapse',
-            fontSize: '0.76rem',
+            fontSize: '0.78rem',
             textAlign: 'left',
           }}>
             <thead>
               <tr style={{
-                background: '#fafaf9',
-                borderBottom: '1px solid #e5e7eb',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.68rem',
-                color: '#6b7280',
+                background: '#f8fafc',
+                borderBottom: '1px solid #e2e8f0',
+                fontSize: '0.70rem',
+                color: '#64748b',
                 textTransform: 'uppercase',
-                letterSpacing: '0.06em',
+                letterSpacing: '0.04em',
+                fontWeight: 600,
               }}>
                 <th style={{ padding: '10px 14px' }}>#</th>
                 <th style={{ padding: '10px 14px' }}>Timestamp</th>
@@ -126,7 +139,7 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
               </tr>
             </thead>
             <tbody>
-              {entries.map((entry, index) => {
+              {finalizedEntries.map((entry, index) => {
                 const blocked = entry.drug_blocked
 
                 return (
@@ -140,7 +153,7 @@ export function AuditTimeline({ entries = [], loading = false, onRefresh }) {
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
                     <td style={{ padding: '12px 14px', fontFamily: 'var(--font-mono)', color: '#6b7280' }}>
-                      {entries.length - index}
+                      {finalizedEntries.length - index}
                     </td>
 
                     <td style={{ padding: '12px 14px' }}>

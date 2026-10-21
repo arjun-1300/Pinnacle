@@ -30,5 +30,7 @@ export function RiskBadge({ risk, ...props }) {
 // Map physician_verdict to badge variants
 export function VerdictBadge({ verdict, ...props }) {
   if (!verdict) return <Badge variant="pending" {...props}>Pending</Badge>
-  return <Badge variant={verdict} {...props}>{verdict}</Badge>
+  const v = verdict.toLowerCase()
+  const label = v === 'approved' ? 'Approved' : v === 'overridden' ? 'Overridden' : verdict
+  return <Badge variant={v} {...props}>{label}</Badge>
 }

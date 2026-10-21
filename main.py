@@ -387,11 +387,11 @@ async def simulate() -> SimulateResponse:
 )
 async def audit() -> list[AuditEntry]:
     """
-    Returns the 15 most recent pipeline audit entries in reverse-chronological
-    order (newest first). Each entry includes the physician verdict if one has
-    been submitted via `/decide`.
+    Returns the 15 most recent finalized pipeline audit entries in reverse-chronological
+    order (newest first). Only returns entries where a physician verdict has been submitted.
     """
-    latest_15 = audit_log[-15:][::-1]   # newest first
+    finalized = [e for e in audit_log if e.get("physician_verdict") in ("approved", "overridden")]
+    latest_15 = finalized[-15:][::-1]   # newest first
     return [
         AuditEntry(
             audit_id=e["audit_id"],

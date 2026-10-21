@@ -12,76 +12,81 @@
 
 /* ── Color Scheme & Tokens ─────────────────────────────────── */
 :root {
-  /* Brand / Baseten Palette */
-  --baseten-green:       #00e575;
-  --baseten-green-hover: #00cc66;
-  --baseten-green-dark:  #008744;
-  --baseten-green-light: #e6fcf1;
-  --baseten-green-glow:  rgba(0, 229, 117, 0.25);
+  /* Brand Clinical Palette (Cohesive, Minimal, Professional) */
+  --baseten-green:       #0d9488;
+  --baseten-green-hover: #0f766e;
+  --baseten-green-dark:  #115e59;
+  --baseten-green-light: #f0fdfa;
+  --baseten-green-glow:  rgba(13, 148, 136, 0.12);
   
-  --baseten-pink:        #ff90e8;
+  --primary:             #0f766e;
+  --primary-hover:       #115e59;
+  --primary-light:       #f0fdfa;
+  --primary-border:      #99f6e4;
+
+  --baseten-pink:        #ec4899;
   --baseten-pink-light:  #fdf2f8;
-  --baseten-sage:        #d1fae5;
-  --baseten-cream:       #fbfbfa;
-  --baseten-black:       #0a0a0a;
-  --baseten-charcoal:    #1f2937;
-  --baseten-gray-light:  #f3f4f6;
+  --baseten-sage:        #f0fdfa;
+  --baseten-cream:       #ffffff;
+  --baseten-black:       #0f172a;
+  --baseten-charcoal:    #1e293b;
+  --baseten-gray-light:  #f8fafc;
 
   /* Accent mappings */
-  --accent:              var(--baseten-green);
-  --accent-light:        #05df72;
-  --accent-hover:        var(--baseten-green-hover);
-  --accent-glow:         var(--baseten-green-glow);
-  --accent-deep:         #004d25;
+  --accent:              #0f766e;
+  --accent-light:        #0d9488;
+  --accent-hover:        #115e59;
+  --accent-glow:         rgba(15, 118, 110, 0.15);
+  --accent-deep:         #134e4a;
 
   /* Clinical Risk Spectrum */
-  --risk-normal:         #00c853;
-  --risk-normal-bg:      #e8f5e9;
-  --risk-normal-border:  #a5d6a7;
-  --risk-warning:        #f59e0b;
+  --risk-normal:         #059669;
+  --risk-normal-bg:      #f0fdf4;
+  --risk-normal-border:  #bbf7d0;
+  --risk-warning:        #d97706;
   --risk-warning-bg:     #fffbeb;
-  --risk-warning-border: #fcd34d;
-  --risk-critical:       #ef4444;
+  --risk-warning-border: #fde68a;
+  --risk-critical:       #dc2626;
   --risk-critical-bg:    #fef2f2;
-  --risk-critical-border:#fca5a5;
-  --risk-blocked:        #ec4899;
-  --risk-blocked-bg:     #fdf2f8;
-  --risk-blocked-border: #fbcfe8;
+  --risk-critical-border:#fecaca;
+  --risk-blocked:        #e11d48;
+  --risk-blocked-bg:     #fff1f2;
+  --risk-blocked-border: #fecdd3;
 
-  /* Surfaces: Baseten Clean White & Crisp Light-Grays */
-  --bg:                  #fafafa;
+  /* Surfaces: Clean Minimal Slate & Pure White */
+  --bg:                  #f8fafc;
   --bg-surface:          #ffffff;
   --bg-elevated:         #ffffff;
   --bg-card:             #ffffff;
   --bg-input:            #ffffff;
-  --bg-hover:            #f4f4f5;
+  --bg-hover:            #f1f5f9;
 
-  /* Borders: Architectural Grid (Solid & Dashed) */
-  --border:              #e5e7eb;
-  --border-dashed:       1px dashed #d1d5db;
-  --border-subtle:       #f3f4f6;
-  --border-focus:        #000000;
-  --border-strong:       #111827;
+  /* Borders: Refined Solid Slate Lines */
+  --border:              #e2e8f0;
+  --border-dashed:       1px solid #e2e8f0;
+  --border-subtle:       #f1f5f9;
+  --border-focus:        #0f766e;
+  --border-strong:       #cbd5e1;
 
   /* Typography */
-  --text-primary:        #0a0a0a;
-  --text-secondary:      #4b5563;
-  --text-muted:          #6b7280;
+  --text-primary:        #0f172a;
+  --text-secondary:      #334155;
+  --text-muted:          #64748b;
   --text-inverse:        #ffffff;
 
-  /* Shadows */
-  --shadow-xs:           0 1px 2px rgba(0,0,0,0.04);
-  --shadow-sm:           0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md:           0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
-  --shadow-lg:           0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
-  --shadow-baseten:      0 8px 30px rgba(0,0,0,0.06);
+  /* Shadows (Soft, Professional Elevation) */
+  --shadow-xs:           0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm:           0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+  --shadow-md:           0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
+  --shadow-lg:           0 10px 15px -3px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.03);
+  --shadow-baseten:      0 4px 20px rgba(15, 23, 42, 0.04);
 
-  /* Radius (Geometric & crisp) */
-  --r-xs:                2px;
-  --r-sm:                4px;
-  --r-md:                6px;
-  --r-lg:                8px;
-  --r-xl:                12px;
+  /* Radius (Harmonized & Balanced) */
+  --r-xs:                3px;
+  --r-sm:                6px;
+  --r-md:                8px;
+  --r-lg:                10px;
+  --r-xl:                14px;
   --r-full:              9999px;
 
   /* Spacing */
@@ -232,73 +237,88 @@ code {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #000000;
+  background: #0f766e;
   color: #ffffff;
-  border: 1px solid #000000;
-  padding: 10px 20px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border-radius: 2px;
+  border: 1px solid #0f766e;
+  padding: 9px 18px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-radius: 6px;
   cursor: pointer;
   transition: all var(--t-fast);
   text-decoration: none;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
 }
 .btn-baseten-primary:hover {
-  background: #1f2937;
-  border-color: #1f2937;
+  background: #115e59;
+  border-color: #115e59;
   transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08);
+}
+.btn-baseten-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-/* Outlined Baseten Button */
+/* Outlined Professional Button */
 .btn-baseten-outline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   background: #ffffff;
-  color: #000000;
-  border: 1px solid #d1d5db;
-  padding: 10px 20px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border-radius: 2px;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+  padding: 9px 18px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-radius: 6px;
   cursor: pointer;
   transition: all var(--t-fast);
   text-decoration: none;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 .btn-baseten-outline:hover {
-  border-color: #000000;
-  background: #f9fafb;
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+}
+.btn-baseten-outline:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-/* Electric Green Button */
+/* Professional Emerald Action Button */
 .btn-baseten-green {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--baseten-green);
-  color: #000000;
-  border: 1px solid var(--baseten-green);
-  padding: 10px 20px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border-radius: 2px;
+  background: #059669;
+  color: #ffffff;
+  border: 1px solid #059669;
+  padding: 9px 18px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  border-radius: 6px;
   cursor: pointer;
   transition: all var(--t-fast);
   text-decoration: none;
-  box-shadow: 0 2px 8px var(--baseten-green-glow);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
 }
 .btn-baseten-green:hover {
-  background: var(--baseten-green-hover);
+  background: #047857;
+  border-color: #047857;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px var(--baseten-green-glow);
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08);
 }
 
 /* ── Animations ────────────────────────────────────────────── */

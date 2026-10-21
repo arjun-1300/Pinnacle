@@ -41,7 +41,18 @@ export function DashboardPage() {
     }
   }, [])
 
+  const isPendingDecision = Boolean(result && !result.physician_verdict)
+
   async function handleAnalyze(payload) {
+    if (isPendingDecision) {
+      toast.error(
+        'Physician Review Required',
+        `Please approve or clinically override the current case for Patient ${result.patient_id} before evaluating a new patient.`
+      )
+      document.getElementById('physician-review')?.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+
     setAnalyzing(true)
     setError(null)
     try {
@@ -73,6 +84,15 @@ export function DashboardPage() {
   }
 
   async function handleQuickSimulate() {
+    if (isPendingDecision) {
+      toast.error(
+        'Physician Review Required',
+        `Please approve or clinically override the current case for Patient ${result.patient_id} before evaluating a new patient.`
+      )
+      document.getElementById('physician-review')?.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+
     try {
       const data = await api.simulate()
       await handleAnalyze({
@@ -92,6 +112,7 @@ export function DashboardPage() {
   async function handleDecide(choice) {
     const data = await api.decide(choice)
     setServerOnline(true)
+    setResult(prev => prev ? { ...prev, physician_verdict: choice } : prev)
     refreshAudit()
     return data
   }
@@ -102,12 +123,24 @@ export function DashboardPage() {
         {/* ── Clinical Command Hero Header ── */}
         <ClinicalCommandHeader
           onQuickSimulate={handleQuickSimulate}
-          onScrollToInput={() => document.getElementById('clinical-console')?.scrollIntoView({ behavior: 'smooth' })}
+          onScrollToInput={() => {
+            if (isPendingDecision) {
+              document.getElementById('physician-review')?.scrollIntoView({ behavior: 'smooth' })
+            } else {
+              document.getElementById('clinical-console')?.scrollIntoView({ behavior: 'smooth' })
+            }
+          }}
         />
 
         {/* ── Section 1: Patient Input Console (Separated Block) ── */}
         <div id="patient-vitals-section" style={{ width: '100%' }}>
-          <VitalsForm onAnalyze={handleAnalyze} loading={analyzing} />
+          <VitalsForm
+            onAnalyze={handleAnalyze}
+            loading={analyzing}
+            pendingReview={isPendingDecision}
+            pendingPatientId={result?.patient_id}
+            onScrollToReview={() => document.getElementById('physician-review')?.scrollIntoView({ behavior: 'smooth' })}
+          />
 
           {error && (
             <div style={{
@@ -132,11 +165,13 @@ export function DashboardPage() {
         <div id="assessment-workflow-section" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
           <AgentRiskCard result={result} />
           <SafetyBanner result={result} />
-          <PhysicianApprovalBar
-            result={result}
-            onDecide={handleDecide}
-            onAuditRefresh={refreshAudit}
-          />
+          <div id="physician-review">
+            <PhysicianApprovalBar
+              result={result}
+              onDecide={handleDecide}
+              onAuditRefresh={refreshAudit}
+            />
+          </div>
         </div>
 
         {/* ── 4-Agent Autonomous Pipeline Full Breakdown (Baseten Blueprint Style) ── */}

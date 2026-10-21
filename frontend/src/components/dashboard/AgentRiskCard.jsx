@@ -28,16 +28,16 @@ const RISK_CONFIG = {
 
 function EmptyState() {
   return (
-    <div className="risk-hero hero-normal" style={{ background: '#fafaf9', borderColor: '#d1d5db' }}>
+    <div className="risk-hero hero-normal" style={{ background: '#f8fafc', borderColor: '#e2e8f0', borderRadius: 8 }}>
       <div className="risk-icon-wrap">
         <span style={{ fontSize: '1.6rem' }}>🫀</span>
       </div>
       <div className="risk-info">
-        <div className="risk-level-label" style={{ fontSize: '1.1rem', color: '#4b5563' }}>
-          AWAITING PATIENT DATA
+        <div className="risk-level-label" style={{ fontSize: '1.05rem', color: '#0f172a' }}>
+          Awaiting Patient Data
         </div>
-        <div className="risk-patient-id">
-          Enter vitals on the left or click Simulate Case to evaluate risk
+        <div className="risk-patient-id" style={{ color: '#64748b' }}>
+          Enter vitals on the left or click "Simulate Case" to evaluate risk
         </div>
       </div>
     </div>
@@ -73,28 +73,29 @@ function ConfidenceBar({ value }) {
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
-        fontSize: '0.72rem',
-        fontFamily: 'var(--font-mono)',
-        color: '#4b5563',
+        fontSize: '0.74rem',
+        color: '#475569',
         marginBottom: 6,
+        fontWeight: 500,
       }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <TrendingUp size={12} /> CONFIDENCE LEVEL
+          <TrendingUp size={13} style={{ color: '#0f766e' }} /> Confidence Level
         </span>
-        <strong style={{ color: '#000' }}>{pct}%</strong>
+        <strong style={{ color: '#0f172a', fontWeight: 700 }}>{pct}%</strong>
       </div>
       <div style={{
         width: '100%',
         height: 6,
-        background: '#e5e7eb',
-        borderRadius: 2,
+        background: '#e2e8f0',
+        borderRadius: 4,
         overflow: 'hidden',
       }}>
         <div
           style={{
             width: `${pct}%`,
             height: '100%',
-            background: 'var(--baseten-green)',
+            background: '#0f766e',
+            borderRadius: 4,
             transition: 'width 0.4s ease',
           }}
         />
@@ -115,19 +116,19 @@ function ActionsList({ actions, risk }) {
             alignItems: 'flex-start',
             gap: 10,
             padding: '9px 14px',
-            background: '#fafaf9',
-            border: '1px solid #e5e7eb',
-            borderRadius: 3,
+            background: '#f8fafc',
+            border: '1px solid #e2e8f0',
+            borderRadius: 6,
             fontSize: '0.80rem',
             lineHeight: 1.5,
-            color: '#1f2937',
+            color: '#334155',
           }}
         >
           <span style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '0.72rem',
             fontWeight: 700,
-            color: '#008744',
+            color: '#0f766e',
             flexShrink: 0,
             marginTop: 1,
           }}>

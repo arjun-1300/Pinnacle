@@ -49,19 +49,19 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
   return (
     <div className="card" style={{ marginTop: 14 }}>
       <div className="card-header" style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: '0.98rem', fontWeight: 700, color: '#111827' }}>
-          Physician Review &amp; Decision
+        <div style={{ fontSize: '0.96rem', fontWeight: 700, color: '#0f172a' }}>
+          Physician Review &amp; Sign-off
         </div>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: 6,
-          fontSize: '0.70rem',
-          fontFamily: 'var(--font-mono)',
-          color: '#4b5563',
+          fontSize: '0.72rem',
+          color: '#64748b',
+          fontWeight: 500,
         }}>
-          <UserCheck size={13} />
-          DOCTOR SIGN-OFF
+          <UserCheck size={14} style={{ color: '#0f766e' }} />
+          <span>Doctor Sign-off Required</span>
         </div>
       </div>
 
@@ -75,22 +75,21 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
           alignItems: 'center',
           justifyContent: 'space-between',
           paddingBottom: 8,
-          borderBottom: '1px dashed #e5e7eb',
+          borderBottom: '1px solid #f1f5f9',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Stethoscope size={16} style={{ color: 'var(--baseten-green-dark)' }} />
+            <Stethoscope size={16} style={{ color: '#0f766e' }} />
             <strong style={{
-              fontSize: '0.78rem',
-              color: '#111827',
-              textTransform: 'uppercase',
+              fontSize: '0.80rem',
+              color: '#0f172a',
             }}>
-              Doctor Confirmation Required
+              Clinical Decision Governance
             </strong>
           </div>
           <span style={{
-            fontSize: '0.70rem',
+            fontSize: '0.72rem',
             fontFamily: 'var(--font-mono)',
-            color: '#6b7280',
+            color: '#64748b',
           }}>
             Patient ID: {result.patient_id || result.audit_id}
           </span>
@@ -99,21 +98,21 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
         {verdict ? (
           <div style={{
             padding: '12px 16px',
-            borderRadius: 2,
-            background: verdict.choice === 'approved' ? '#e6fcf1' : '#fffbeb',
-            border: `1px solid ${verdict.choice === 'approved' ? 'rgba(0,229,117,0.5)' : '#fde68a'}`,
+            borderRadius: 6,
+            background: verdict.choice === 'approved' ? '#f0fdf4' : '#fffbeb',
+            border: `1px solid ${verdict.choice === 'approved' ? '#bbf7d0' : '#fde68a'}`,
             display: 'flex',
             alignItems: 'center',
             gap: 10,
           }}>
             {verdict.choice === 'approved' ? (
               <>
-                <CheckCircle size={18} style={{ color: '#008744', flexShrink: 0 }} />
+                <CheckCircle size={18} style={{ color: '#059669', flexShrink: 0 }} />
                 <div>
-                  <strong style={{ fontSize: '0.82rem', color: '#005a2b', display: 'block' }}>
-                    APPROVED BY ATTENDING PHYSICIAN
+                  <strong style={{ fontSize: '0.84rem', color: '#166534', display: 'block' }}>
+                    Approved by Attending Physician
                   </strong>
-                  <span style={{ fontSize: '0.70rem', fontFamily: 'var(--font-mono)', color: '#4b5563' }}>
+                  <span style={{ fontSize: '0.72rem', color: '#4b5563' }}>
                     Automated triage committed to electronic health record at {new Date().toLocaleTimeString()}
                   </span>
                 </div>
@@ -122,10 +121,10 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
               <>
                 <AlertTriangle size={18} style={{ color: '#d97706', flexShrink: 0 }} />
                 <div>
-                  <strong style={{ fontSize: '0.82rem', color: '#92400e', display: 'block' }}>
-                    CLINICAL OVERRIDE SUBMITTED BY PHYSICIAN
+                  <strong style={{ fontSize: '0.84rem', color: '#92400e', display: 'block' }}>
+                    Clinical Override Submitted by Physician
                   </strong>
-                  <span style={{ fontSize: '0.70rem', fontFamily: 'var(--font-mono)', color: '#4b5563' }}>
+                  <span style={{ fontSize: '0.72rem', color: '#4b5563' }}>
                     Custom treatment plan mandated. Audit trail updated.
                   </span>
                 </div>
@@ -134,8 +133,8 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
           </div>
         ) : (
           <>
-            <p style={{ fontSize: '0.78rem', lineHeight: 1.5, color: '#4b5563' }}>
-              Review multi-agent risk tier (<strong>{result.predicted_risk}</strong>) and safety agent recommendations above. Confirm approval to proceed with automated triage or submit a clinical override.
+            <p style={{ fontSize: '0.82rem', lineHeight: 1.55, color: '#475569' }}>
+              Review the multi-agent risk tier (<strong>{result.predicted_risk}</strong>) and safety verification above. Confirm approval to proceed with automated triage or submit a clinical override.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -145,10 +144,10 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
                 className="btn-baseten-green"
                 onClick={() => handleChoice('approved')}
                 disabled={!!deciding}
-                style={{ padding: '10px 14px' }}
+                style={{ padding: '9px 14px' }}
               >
                 {deciding === 'approved' ? <Spinner size="sm" /> : <CheckCircle size={15} />}
-                <span>APPROVE RECOMMENDATION</span>
+                <span>Approve Recommendation</span>
               </button>
 
               <button
@@ -157,10 +156,10 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
                 className="btn-baseten-outline"
                 onClick={() => handleChoice('overridden')}
                 disabled={!!deciding}
-                style={{ padding: '10px 14px', color: '#b45309', borderColor: '#fde68a', background: '#fffbeb' }}
+                style={{ padding: '9px 14px', color: '#b45309', borderColor: '#fde68a', background: '#fffbeb' }}
               >
                 {deciding === 'overridden' ? <Spinner size="sm" /> : <AlertTriangle size={15} />}
-                <span>OVERRIDE PIPELINE</span>
+                <span>Clinical Override</span>
               </button>
             </div>
           </>
@@ -168,11 +167,11 @@ export function PhysicianApprovalBar({ result, onDecide, onAuditRefresh }) {
 
         {error && (
           <div style={{
-            fontSize: '0.72rem',
+            fontSize: '0.74rem',
             color: '#b91c1c',
             background: '#fef2f2',
-            padding: '6px 10px',
-            borderRadius: 2,
+            padding: '8px 12px',
+            borderRadius: 6,
             border: '1px solid #fecaca',
           }}>
             ⚠ {error}
