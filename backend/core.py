@@ -294,8 +294,25 @@ class MonitoringAgent:
         model_name: Optional[str] = None,
         api_key: Optional[str] = None,
     ) -> "MonitoringAgent":
+        resolved_path = path
+        if not os.path.exists(resolved_path):
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            candidate = os.path.join(base_dir, os.path.basename(path))
+            if os.path.exists(candidate):
+                resolved_path = candidate
+            else:
+                logger.info(f"[MonitoringAgent] '{path}' not found on disk. Auto-training Random Forest baseline...")
+                agent = cls(model_name=model_name, api_key=api_key)
+                train_df = SyntheticDataGenerator(seed=42).generate(n_records=3000)
+                agent.fit(train_df)
+                try:
+                    agent.save(candidate)
+                except Exception as save_err:
+                    logger.warning(f"[MonitoringAgent] Could not persist auto-trained model: {save_err}")
+                return agent
+
         obj = cls.__new__(cls)
-        data = joblib.load(path)
+        data = joblib.load(resolved_path)
         obj.clf = data["clf"]
         obj._classes = data["classes"]
         obj.api_key = api_key if api_key is not None else (os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"))
@@ -454,10 +471,14 @@ class MedicationAgent:
                 self.llm_enabled = False
 
         self.ddi_ml = None
-        if os.path.exists("ddi_model.joblib"):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        ddi_path = os.path.join(base_dir, "ddi_model.joblib")
+        if not os.path.exists(ddi_path) and os.path.exists("ddi_model.joblib"):
+            ddi_path = "ddi_model.joblib"
+        if os.path.exists(ddi_path):
             try:
-                self.ddi_ml = joblib.load("ddi_model.joblib")
-                logger.info("[MedicationAgent] DDI ML Classifier loaded successfully (ddi_model.joblib)")
+                self.ddi_ml = joblib.load(ddi_path)
+                logger.info(f"[MedicationAgent] DDI ML Classifier loaded successfully ({ddi_path})")
             except Exception as e:
                 logger.warning(f"[MedicationAgent] Failed to load ddi_model.joblib: {e}")
 

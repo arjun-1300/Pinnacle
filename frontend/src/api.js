@@ -1,7 +1,12 @@
 // api.js — All fetch calls to the FastAPI backend
-// In local dev or reverse proxy, empty string uses relative paths (/analyze)
-// In production with standalone frontend, set VITE_API_BASE_URL (e.g. https://api.yourdomain.com)
-const BASE = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '')
+// In local dev, empty string uses relative paths (/analyze) with Vite proxy
+// In production, defaults to https://pinnacle-nng7.onrender.com unless VITE_API_BASE_URL is specified
+const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+const BASE = (
+  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.VITE_BACKEND_URL ||
+  (isLocal ? '' : 'https://pinnacle-nng7.onrender.com')
+).replace(/\/$/, '')
 
 async function apiFetch(method, path, body) {
   const targetUrl = `${BASE}${path}`

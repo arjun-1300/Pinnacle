@@ -73,8 +73,12 @@ _orchestrator: Optional[Orchestrator] = None
 def get_orchestrator() -> Orchestrator:
     global _orchestrator
     if _orchestrator is None:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        model_file = os.path.join(base_dir, "model.joblib")
+        if not os.path.exists(model_file) and os.path.exists("model.joblib"):
+            model_file = "model.joblib"
         _orchestrator = Orchestrator(
-            model_path="model.joblib",
+            model_path=model_file,
             safety_on=True,
             gemini_model=os.environ.get("GEMINI_MODEL", "gemini-3-flash-preview"),
         )

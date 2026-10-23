@@ -10,6 +10,7 @@ htmlcov/
 # ML artifacts & model binaries
 *.joblib
 *.pkl
+!backend/*.joblib
 
 # Node.js and Frontend dependencies/builds
 node_modules/
