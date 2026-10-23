@@ -18,6 +18,7 @@ Validates the critical patient workflow:
 """
 
 import sys
+import os
 import json
 import urllib.request
 import urllib.error
@@ -29,7 +30,7 @@ if sys.stdout.encoding != 'utf-8':
     except Exception:
         pass
 
-BASE_URL = "http://localhost:8001"
+BASE_URL = os.environ.get("PINNACLE_BASE_URL", "http://localhost:8000")
 
 
 def print_banner(text: str):

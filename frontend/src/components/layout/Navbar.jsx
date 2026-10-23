@@ -41,14 +41,6 @@ export function Navbar() {
               </a>
             </div>
           </div>
-
-          {/* Right Status Badge */}
-          <div className="navbar-right">
-            <div className="navbar-status-pill">
-              <span className="pulse-dot" />
-              <span>System Operational</span>
-            </div>
-          </div>
         </div>
       </nav>
     </header>

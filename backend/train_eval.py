@@ -13,6 +13,16 @@ Workflow
      Count unsafe drug proposals with SafetyAgent ON vs OFF
 """
 
+import sys
+import os
+
+# Safe UTF-8 console output for Windows cmd/powershell
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
+
 import numpy as np
 import pandas as pd
 from sklearn.metrics import (
@@ -180,8 +190,8 @@ separator("EXPERIMENT 2 — Safety Agent Ablation")
 
 print("Running pipeline on 1,000 test records with Safety ON and OFF …\n")
 
-orchestrator_on  = Orchestrator(model_path="model.joblib", safety_on=True)
-orchestrator_off = Orchestrator(model_path="model.joblib", safety_on=False)
+orchestrator_on  = Orchestrator(model_path="model.joblib", safety_on=True, gemini_api_key="")
+orchestrator_off = Orchestrator(model_path="model.joblib", safety_on=False, gemini_api_key="")
 
 results_on  = orchestrator_on.run_batch(test_records)
 results_off = orchestrator_off.run_batch(test_records)

@@ -1,9 +1,9 @@
-"""verify_api.py — Phase 2 endpoint verification script"""
 import urllib.request
 import urllib.error
 import json
+import os
 
-BASE = "http://localhost:8001"
+BASE = os.environ.get("PINNACLE_BASE_URL", "http://localhost:8000")
 
 
 def req(method, path, body=None):

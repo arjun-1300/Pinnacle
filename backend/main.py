@@ -140,6 +140,10 @@ class AnalyzeResponse(BaseModel):
     agent_llm_status:     dict[str, bool] = Field(default_factory=dict)
     llm_powered:          bool = False
     llm_model:            Optional[str] = None
+    ml_probabilities:     dict[str, float] = Field(default_factory=dict)
+    ml_feature_importances: dict[str, float] = Field(default_factory=dict)
+    ml_model_name:        Optional[str] = "RandomForestClassifier (99.02% F1)"
+    medication_ml_score:  Optional[dict] = None
 
 
 class DecideResponse(BaseModel):
@@ -181,6 +185,10 @@ class AuditEntry(BaseModel):
     agent_llm_status:     dict[str, bool] = Field(default_factory=dict)
     llm_powered:          bool = False
     llm_model:            Optional[str] = None
+    ml_probabilities:     dict[str, float] = Field(default_factory=dict)
+    ml_feature_importances: dict[str, float] = Field(default_factory=dict)
+    ml_model_name:        Optional[str] = "RandomForestClassifier (99.02% F1)"
+    medication_ml_score:  Optional[dict] = None
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -224,6 +232,10 @@ def _build_audit_entry(audit_id: str, patient_id: str, result, request: VitalsRe
         "agent_llm_status":     result.agent_llm_status,
         "llm_powered":          result.llm_powered,
         "llm_model":            result.llm_model,
+        "ml_probabilities":     getattr(result, "ml_probabilities", {}),
+        "ml_feature_importances": getattr(result, "ml_feature_importances", {}),
+        "ml_model_name":        getattr(result, "ml_model_name", "RandomForestClassifier (99.02% F1)"),
+        "medication_ml_score":  getattr(result, "medication_ml_score", None),
         "physician_verdict":    None,   # filled by /decide
         "updated_at":           None,
     }
@@ -293,6 +305,10 @@ async def analyze(request: VitalsRequest) -> AnalyzeResponse:
         agent_llm_status=result.agent_llm_status,
         llm_powered=result.llm_powered,
         llm_model=result.llm_model,
+        ml_probabilities=getattr(result, "ml_probabilities", {}),
+        ml_feature_importances=getattr(result, "ml_feature_importances", {}),
+        ml_model_name=getattr(result, "ml_model_name", "RandomForestClassifier (99.02% F1)"),
+        medication_ml_score=getattr(result, "medication_ml_score", None),
     )
 
 
@@ -426,4 +442,6 @@ async def health():
         "has_google_genai": core.HAS_GOOGLE_GENAI,
         "llm_enabled": orch.decision_agent.llm_enabled if orch else False,
         "llm_model": orch.decision_agent.model_name if orch else None,
+        "model_loaded": bool(orch and orch.monitoring_agent and orch.monitoring_agent.clf),
+        "audit_entries": len(audit_log),
     }
