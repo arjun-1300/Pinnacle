@@ -1,6 +1,7 @@
-// api.js — All fetch calls to the FastAPI backend (proxied by Vite)
-
-const BASE = ''   // Vite dev proxy handles /analyze, /decide, /simulate, /audit
+// api.js — All fetch calls to the FastAPI backend
+// In local dev or reverse proxy, empty string uses relative paths (/analyze)
+// In production with standalone frontend, set VITE_API_BASE_URL (e.g. https://api.yourdomain.com)
+const BASE = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_BACKEND_URL || '').replace(/\/$/, '')
 
 async function apiFetch(method, path, body) {
   const opts = {
