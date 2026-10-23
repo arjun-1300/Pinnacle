@@ -40,3 +40,7 @@ desktop.ini
 
 # Docker local data volumes (if any)
 *.log
+
+# Sensitive credentials & API keys
+apikeys.md
+*key*.md
